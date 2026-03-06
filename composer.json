@@ -1,0 +1,13 @@
+{
+    "name": "car_hire/app",
+    "description": "Car Hire Management System",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "authors": [
+        {
+            "name": "Cortex Agent"
+        }
+    ]
+}

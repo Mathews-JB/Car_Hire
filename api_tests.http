@@ -1,0 +1,28 @@
+### Car Higher API Test Suite
+### Use with "REST Client" extension (Free & Open Source)
+
+@baseUrl = http://localhost/Car_Higher
+
+### 1. Get Vehicle GPS
+# Fetches real-time position and history for a specific booking
+GET {{baseUrl}}/api/vehicle-gps.php?booking_id=1
+Accept: application/json
+
+###
+### 2. Get Global Fleet Status
+# Fetches current position of all active vehicles in the fleet
+GET {{baseUrl}}/api/fleet-gps.php
+Accept: application/json
+
+###
+
+### 3. Validate Voucher
+# Validates a promo code against a specific booking amount
+GET {{baseUrl}}/api/validate-voucher.php?code=RESCUE10&amount=500
+Accept: application/json
+
+###
+### 4. Simulate GPS Step
+# Manually advances a vehicle one step along the Lusaka route
+GET {{baseUrl}}/api/simulate-step.php?booking_id=1
+Accept: application/json

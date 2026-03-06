@@ -1,0 +1,19 @@
+{
+  "name": "car_hire",
+  "version": "1.0.0",
+  "description": "1. [Introduction](#introduction)\r 2. [Major Requirements](#major-requirements)\r 3. [User Panels and Modules](#user-panels-and-modules)\r    - [Customer Portal](#customer-portal)\r    - [Agent Portal](#agent-portal)\r    - [Admin Portal](#admin-portal)\r 4. [Pages and Features](#pages-and-features)\r 5. [Security Considerations](#security-considerations)\r 6. [Payment Gateway Integration: Zambian Mobile Money](#payment-gateway-integration-zambian-mobile-money)\r 7. [Landing Page Design](#landing-page-design)\r 8. [Conclusion](#conclusion)",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0",
+    "@capacitor/splash-screen": "^8.0.1"
+  }
+}

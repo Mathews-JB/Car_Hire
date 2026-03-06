@@ -1,0 +1,12 @@
+{
+    "client": "Thunder Client",
+    "environmentName": "Car Hire Local",
+    "dateExported": "2026-02-15T21:52:00.000Z",
+    "version": "1.1",
+    "variables": [
+        {
+            "name": "baseUrl",
+            "value": "http://localhost/Car_hire"
+        }
+    ]
+}

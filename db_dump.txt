@@ -1,0 +1,31 @@
+Array
+(
+    [0] => id
+    [1] => name
+    [2] => email
+    [3] => password
+    [4] => role
+    [5] => phone
+    [6] => license_no
+    [7] => created_at
+    [8] => profile_picture
+    [9] => cover_photo
+    [10] => loyalty_points
+    [11] => membership_tier
+    [12] => verification_status
+    [13] => address
+    [14] => id_number
+    [15] => license_number
+    [16] => profile_image_path
+    [17] => license_image_path
+    [18] => nrc_image_path
+    [19] => dob
+    [20] => id_type
+    [21] => license_expiry
+    [22] => license_class
+    [23] => emergency_contact_name
+    [24] => emergency_contact_phone
+    [25] => nrc_back_image_path
+    [26] => license_back_image_path
+    [27] => utility_bill_image_path
+)

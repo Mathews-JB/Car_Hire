@@ -1,0 +1,18 @@
+ID:1 | MAKE:Toyota | MODEL:Land Cruiser Prado | IMG:https://images.unsplash.com/photo-1594535182308-8ffefbb661e1?auto=format&fit=crop&q=80&w=1000
+ID:2 | MAKE:Toyota | MODEL:Hilux GD-6 | IMG:public/images/cars/hilux.png
+ID:3 | MAKE:Ford | MODEL:Ranger Wildtrak | IMG:public/images/cars/ranger.png
+ID:4 | MAKE:Volkswagen | MODEL:Golf 7 TSI | IMG:https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=1000
+ID:5 | MAKE:Land Rover | MODEL:Defender 110 | IMG:https://images.unsplash.com/photo-1629897048514-3dd7414fe72a?auto=format&fit=crop&q=80&w=1000
+ID:6 | MAKE:Mercedes-Benz | MODEL:G63 AMG | IMG:https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&q=80&w=1000
+ID:7 | MAKE:BMW | MODEL:X5 xDrive40i | IMG:https://images.unsplash.com/photo-1523983388277-336a66bf9bcc?auto=format&fit=crop&q=80&w=1000
+ID:8 | MAKE:Toyota | MODEL:Corolla Quest | IMG:https://images.unsplash.com/photo-1623860841270-1793699b6f84?auto=format&fit=crop&q=80&w=1000
+ID:9 | MAKE:Nissan | MODEL:Navara PRO-4X | IMG:https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1000
+ID:10 | MAKE:Mitsubishi | MODEL:Pajero Sport | IMG:https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1000
+ID:11 | MAKE:Toyota | MODEL:Camry | IMG:https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&q=80&w=1000
+ID:12 | MAKE:Audi | MODEL:Q7 Quattro | IMG:https://images.unsplash.com/photo-1541348263662-e0c8de4221fe?auto=format&fit=crop&q=80&w=1000
+ID:13 | MAKE:Jeep | MODEL:Grand Cherokee | IMG:https://images.unsplash.com/photo-1539414417088-348620803cbe?auto=format&fit=crop&q=80&w=1000
+ID:14 | MAKE:Toyota | MODEL:Rav4 | IMG:https://images.unsplash.com/photo-1616422329260-23facca31293?auto=format&fit=crop&q=80&w=1000
+ID:15 | MAKE:Hyundai | MODEL:Santa Fe | IMG:https://images.unsplash.com/photo-1616422285623-13ff0167c958?auto=format&fit=crop&q=80&w=1000
+ID:16 | MAKE:Suzuki | MODEL:Jimny | IMG:https://images.unsplash.com/photo-1614741369527-0cf11c5218d6?auto=format&fit=crop&q=80&w=1000
+ID:17 | MAKE:Toyota | MODEL:Alphard | IMG:https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1000
+ID:18 | MAKE:Ford | MODEL:Everest | IMG:https://images.unsplash.com/photo-1611016186353-9af58c69a533?auto=format&fit=crop&q=80&w=1000

@@ -1,0 +1,18 @@
+ID: 1 | Toyota Land Cruiser Prado | URL: public/images/cars/prado.jpg
+ID: 2 | Toyota Hilux GD-6 | URL: public/images/cars/hilux.png
+ID: 3 | Ford Ranger Wildtrak | URL: public/images/cars/ranger.png
+ID: 4 | Volkswagen Golf 7 TSI | URL: public/images/cars/golf.jpg
+ID: 5 | Land Rover Defender 110 | URL: public/images/cars/defender.jpg
+ID: 6 | Mercedes-Benz G63 AMG | URL: public/images/cars/g63.jpg
+ID: 7 | BMW X5 xDrive40i | URL: public/images/cars/bmw_x5.jpg
+ID: 8 | Toyota Corolla Quest | URL: public/images/cars/corolla.jpg
+ID: 9 | Nissan Navara PRO-4X | URL: public/images/cars/navara.jpg
+ID: 10 | Mitsubishi Pajero Sport | URL: public/images/cars/pajero.jpg
+ID: 11 | Toyota Camry | URL: public/images/cars/camry.jpg
+ID: 12 | Audi Q7 Quattro | URL: public/images/cars/audi_q7.jpg
+ID: 13 | Jeep Grand Cherokee | URL: public/images/cars/jeep.jpg
+ID: 14 | Toyota Rav4 | URL: public/images/cars/rav4.jpg
+ID: 15 | Hyundai Santa Fe | URL: public/images/cars/santa_fe.jpg
+ID: 16 | Suzuki Jimny | URL: public/images/cars/jimny.jpg
+ID: 17 | Toyota Alphard | URL: public/images/cars/alphard.jpg
+ID: 18 | Ford Everest | URL: public/images/cars/everest.jpg

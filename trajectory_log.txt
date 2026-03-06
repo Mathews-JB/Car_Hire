@@ -1,0 +1,30 @@
+2026-01-19 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-20 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-21 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-22 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-23 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-24 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-25 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-26 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-27 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-28 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-29 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-30 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-01-31 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-02-01 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-02-02 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-02-03 | Zero Activity | Cum R: 0 | Cum P: 0
+2026-02-04 | Daily R: 0 | Daily P: 59080 | Cum R: 0 | Cum P: 59080
+2026-02-05 | Daily R: 0 | Daily P: 292000 | Cum R: 0 | Cum P: 351080
+2026-02-06 | Daily R: 0 | Daily P: 2400 | Cum R: 0 | Cum P: 353480
+2026-02-07 | Zero Activity | Cum R: 0 | Cum P: 353480
+2026-02-08 | Zero Activity | Cum R: 0 | Cum P: 353480
+2026-02-09 | Zero Activity | Cum R: 0 | Cum P: 353480
+2026-02-10 | Zero Activity | Cum R: 0 | Cum P: 353480
+2026-02-11 | Zero Activity | Cum R: 0 | Cum P: 353480
+2026-02-12 | Daily R: 5040 | Daily P: 6640 | Cum R: 5040 | Cum P: 360120
+2026-02-13 | Zero Activity | Cum R: 5040 | Cum P: 360120
+2026-02-14 | Zero Activity | Cum R: 5040 | Cum P: 360120
+2026-02-15 | Zero Activity | Cum R: 5040 | Cum P: 360120
+2026-02-16 | Zero Activity | Cum R: 5040 | Cum P: 360120
+2026-02-17 | Zero Activity | Cum R: 5040 | Cum P: 360120

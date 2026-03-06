@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Hire Bootloader</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --primary: #3b82f6;
+            --accent: #f97316;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+        .logo-container {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        img.logo {
+            width: 140px;
+            height: 140px;
+            border-radius: 35px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .status-text {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .loader-ring {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #config-ui {
+            display: none;
+            padding: 30px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 320px;
+            width: 85%;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 { margin: 0 0 10px 0; font-size: 1.2rem; }
+        p.help-text { font-size: 0.8rem; color: #94a3b8; margin-bottom: 25px; line-height: 1.5; }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label { font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-left: 5px; }
+        input {
+            width: 100%;
+            padding: 14px;
+            box-sizing: border-box;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            margin-top: 5px;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--primary); outline: none; background: rgba(15, 23, 42, 0.8); }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-primary { background: var(--primary); color: white; margin-bottom: 10px; }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-ghost { background: transparent; color: #64748b; font-size: 0.75rem; }
+
+        .error-tag {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="logo.png" class="logo">
+    </div>
+
+    <div id="boot-ui">
+        <div class="loader-ring"></div>
+        <p class="status-text" id="status-label">Connecting to Car Hire...</p>
+    </div>
+
+    <div id="config-ui">
+        <h2>Connection Lost</h2>
+        <p class="help-text">We couldn't reach the Car Hire server. Please check your network or update the IP.</p>
+        
+        <div id="error-msg" class="error-tag">Offline: Operation Timed Out</div>
+
+        <div class="input-group">
+            <label>Server IP Address</label>
+            <input type="text" id="ip-input" placeholder="e.g. 192.168.8.102" spellcheck="false">
+        </div>
+
+        <button class="btn btn-primary" onclick="handleConnect()">Connect Now</button>
+        <button class="btn btn-ghost" onclick="resetAndReload()">Reset to Default</button>
+    </div>
+
+    <script>
+        const DEFAULT_IP = "192.168.8.102";
+        const APP_PATH = "/Car_Higher/";
+
+        function formatIp(raw) {
+            let ip = raw.trim().replace(/^https?:\/\//, '').replace(/\/+$/, '');
+            return ip;
+        }
+
+        function getUrl(ip) {
+            return `http://${ip}${APP_PATH}`;
+        }
+
+        // Performance-focused check
+        async function probeServer(ip) {
+            const url = getUrl(ip);
+            const statusLabel = document.getElementById('status-label');
+            statusLabel.innerText = "Probing " + ip + "...";
+
+            return new Promise((resolve) => {
+                const timeout = setTimeout(() => {
+                    resolve(false);
+                }, 4000);
+
+                // Use an image probe as it's the most permissive
+                const img = new Image();
+                img.onload = () => { clearTimeout(timeout); resolve(true); };
+                img.onerror = () => { clearTimeout(timeout); resolve(false); };
+                img.src = url + "public/images/icon-192x192.png?cache=" + Date.now();
+            });
+        }
+
+        async function start() {
+            const savedIp = localStorage.getItem('car_hire_ip') || DEFAULT_IP;
+            document.getElementById('ip-input').value = savedIp;
+
+            const success = await probeServer(savedIp);
+
+            if (success) {
+                window.location.href = getUrl(savedIp);
+            } else {
+                showConfig();
+            }
+        }
+
+        function showConfig() {
+            document.getElementById('boot-ui').style.display = 'none';
+            document.getElementById('config-ui').style.display = 'block';
+            document.getElementById('error-msg').style.display = 'block';
+        }
+
+        function handleConnect() {
+            const rawIp = document.getElementById('ip-input').value;
+            const cleanIp = formatIp(rawIp);
+            
+            if (cleanIp) {
+                localStorage.setItem('car_hire_ip', cleanIp);
+                // Immediately try to redirect, don't wait for probe again if user clicked button
+                window.location.href = getUrl(cleanIp);
+            }
+        }
+
+        function resetAndReload() {
+            localStorage.removeItem('car_hire_ip');
+            window.location.reload();
+        }
+
+        // Delay start slightly for visual smoothness
+        setTimeout(start, 500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+/* Floating Trip Context Pill */
+.trip-float-pill {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border-radius: 50px;
+    padding: 12px 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 10000;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: slideUpFade 0.6s ease-out forwards;
+}
+
+.trip-float-pill:hover {
+    transform: translateX(-50%) translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    background: #111827;
+}
+
+.trip-float-pill.warning {
+    border-color: rgba(245, 158, 11, 0.5);
+}
+
+.trip-float-pill.success {
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+.trip-pill-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 0.9rem;
+}
+
+.trip-float-pill.warning .trip-pill-icon {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+.trip-float-pill.success .trip-pill-icon {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.trip-pill-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.trip-pill-title {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.trip-pill-text {
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.trip-pill-action {
+    background: var(--white);
+    color: var(--dark-color);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.trip-pill-action:hover {
+    background: var(--accent-vibrant);
+    color: white;
+}
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .trip-float-pill {
+        bottom: 90px;
+        width: 90%;
+        max-width: 400px;
+        justify-content: space-between;
+        padding: 10px 15px;
+    }
+
+    .trip-pill-text {
+        font-size: 0.8rem;
+    }
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Map Test</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100vh;
+            background: #ccc;
+        }
+
+        #status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            z-index: 9999;
+            border: 2px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="status">Loading...</div>
+    <div id="map"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script>
+        const status = document.getElementById('status');
+
+        try {
+            status.innerHTML = 'Step 1: Leaflet loaded';
+
+            if (typeof L === 'undefined') {
+                status.innerHTML = 'ERROR: Leaflet (L) is undefined!';
+                throw new Error('Leaflet not loaded');
+            }
+
+            status.innerHTML = 'Step 2: Creating map...';
+
+            const map = L.map('map').setView([-15.4167, 28.2833], 13);
+
+            status.innerHTML = 'Step 3: Adding tiles...';
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            status.innerHTML = 'Step 4: Adding marker...';
+
+            const marker = L.marker([-15.4167, 28.2833]).addTo(map);
+            marker.bindPopup('<b>Test Marker</b><br>Lusaka, Zambia').openPopup();
+
+            status.innerHTML = 'SUCCESS! Map loaded.';
+            status.style.background = 'lightgreen';
+            status.style.borderColor = 'green';
+
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 3000);
+
+        } catch (error) {
+            status.innerHTML = 'ERROR: ' + error.message;
+            status.style.background = 'red';
+            status.style.color = 'white';
+            console.error(error);
+        }
+    </script>
+</body>
+
+</html>
