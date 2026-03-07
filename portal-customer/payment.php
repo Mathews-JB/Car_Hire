@@ -48,21 +48,40 @@ if (isset($_GET['error'])) {
     <link rel="stylesheet" href="../public/css/style.css">
     <style>
         :root {
-            --payment-bg: rgba(15, 23, 42, 0.7);
+            --payment-bg: rgba(45, 45, 45, 0.65);
             --lenco-blue: #3b82f6;
             --mtn-yellow: #ffcc00;
             --airtel-red: #ed1c24;
             --zamtel-green: #009933;
         }
 
+        html, body { 
+            background: #080c17 !important; 
+            color: #f8fafc !important; 
+            overflow: hidden !important;
+            height: 100% !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        .portal-content {
+            position: fixed;
+            inset: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-top: 80px;
+            padding-bottom: 110px;
+            overscroll-behavior: none;
+        }
+
         .payment-card {
             max-width: 500px;
-            margin: 100px auto 40px;
+            margin: 40px auto;
             background: var(--payment-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
             padding: 40px;
-            border-radius: 24px;
+            border-radius: 32px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 40px 100px rgba(0,0,0,0.6);
             position: relative;
@@ -276,7 +295,7 @@ if (isset($_GET['error'])) {
         }
 
         body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
         }
 
         @media (max-width: 500px) {
@@ -309,7 +328,8 @@ if (isset($_GET['error'])) {
                 margin-bottom: 0;
             }
             .amount-display strong {
-                font-size: 1.4rem;
+                font-size: 1.6rem;
+                color: white;
             }
             .provider-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -368,7 +388,7 @@ if (isset($_GET['error'])) {
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <nav class="hub-bar">
         <a href="dashboard.php" class="logo">Car Hire</a>

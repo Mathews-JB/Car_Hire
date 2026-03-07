@@ -65,7 +65,7 @@ $company_tpin = $settings['company_tpin'] ?? '1001234567';
         
         body {
             font-family: 'Inter', sans-serif;
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
             color: var(--primary);
             margin: 0;
             padding: 40px;
@@ -363,7 +363,7 @@ $company_tpin = $settings['company_tpin'] ?? '1001234567';
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <button class="print-fab" onclick="window.print()" title="Print Receipt">
         <i class="fas fa-print"></i>

@@ -68,7 +68,7 @@ $bookings = $stmt->fetchAll();
     <link rel="stylesheet" href="../public/css/style.css?v=2.1">
     <style>
         body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
         }
 
         @media (max-width: 768px) {
@@ -115,7 +115,7 @@ $bookings = $stmt->fetchAll();
             .data-table tbody tr {
                 display: flex !important;
                 flex-direction: column !important;
-                background: rgba(15, 23, 42, 0.6) !important;
+                background: rgba(30, 30, 35, 0.6) !important;
                 border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 border-radius: 16px !important;
                 margin-bottom: 0 !important;
@@ -203,7 +203,7 @@ $bookings = $stmt->fetchAll();
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <?php include_once '../includes/mobile_header.php'; ?>
 

@@ -107,7 +107,7 @@ $vehicles = $stmt->fetchAll();
             border-color: var(--primary-color);
         }
         body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
         }
 
         @media (max-width: 768px) {
@@ -225,7 +225,7 @@ $vehicles = $stmt->fetchAll();
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <?php include_once '../includes/mobile_header.php'; ?>
 
@@ -272,7 +272,7 @@ $vehicles = $stmt->fetchAll();
             </div>
 
             <!-- Multi-car Fleet Booking Banner -->
-            <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(15, 23, 42, 0.4)); border: 1px dashed rgba(59, 130, 246, 0.4); padding: 20px; border-radius: 16px; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+            <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(30, 30, 35, 0.4)); border: 1px dashed rgba(59, 130, 246, 0.4); padding: 20px; border-radius: 16px; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <div style="background: rgba(37, 99, 235, 0.2); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #60a5fa; font-size: 1.2rem;">
                         <i class="fas fa-car-side"></i><i class="fas fa-plus" style="font-size: 0.6rem; transform: translate(2px, -8px);"></i>

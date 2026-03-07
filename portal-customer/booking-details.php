@@ -57,7 +57,7 @@ $contract = $stmt->fetch();
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+            background: linear-gradient(to top, rgba(30, 30, 35, 0.9), transparent);
         }
         .hero-info {
             position: absolute;
@@ -68,7 +68,7 @@ $contract = $stmt->fetch();
         }
         .details-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
         .glass-card { 
-            background: rgba(15, 23, 42, 0.4); 
+            background: rgba(30, 30, 35, 0.4); 
             backdrop-filter: blur(20px); 
             border: 1px solid rgba(255, 255, 255, 0.1); 
             border-radius: 24px; 
@@ -83,11 +83,11 @@ $contract = $stmt->fetch();
             .booking-hero { height: 200px; }
         }
         body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <nav class="hub-bar">
         <a href="dashboard.php" class="logo">Car Hire</a>

@@ -59,11 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../public/css/style.css">
     <style>
         body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
         }
 
         .event-banner {
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(15, 23, 42, 0.95));
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(30, 30, 35, 0.95));
             border-radius: 16px;
             padding: 40px 30px;
             text-align: center;
@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <nav class="hub-bar">
         <a href="dashboard.php" class="logo">Car Hire</a>
