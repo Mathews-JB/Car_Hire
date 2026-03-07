@@ -512,9 +512,117 @@ nav {
 .form-group input,
 .form-group select {
   padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
   outline: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+/* ============================================
+   PREMIUM DARK FORM CONTROLS
+   ============================================ */
+.form-control {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: white;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  appearance: none;
+  -webkit-appearance: none;
+  color-scheme: dark;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 400;
+}
+
+.form-control:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  background: rgba(37, 99, 235, 0.08);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+/* Select dropdown arrow */
+select.form-control {
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.5)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+select.form-control option {
+  background: #1a1a24;
+  color: white;
+  padding: 12px;
+}
+
+/* Textarea */
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+/* File inputs */
+input[type="file"].form-control {
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+input[type="file"].form-control::file-selector-button {
+  background: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  border-radius: 8px;
+  padding: 6px 14px;
+  margin-right: 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="file"].form-control::file-selector-button:hover {
+  background: rgba(37, 99, 235, 0.35);
+}
+
+/* Date inputs */
+input[type="date"].form-control,
+input[type="time"].form-control {
+  color-scheme: dark;
+}
+
+/* Filters bar form controls — slightly more compact */
+.filters-bar .form-control {
+  padding: 12px 16px;
+  font-size: 0.88rem;
+}
+
+/* Form Group Label Styling */
+.form-group label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  display: block;
 }
 
 /* Premium Dark Select */
