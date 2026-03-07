@@ -188,30 +188,30 @@ $me = $stmt->fetch();
                         
                         <div class="form-group">
                             <label>Business Name</label>
-                            <input type="text" name="company_name" value="<?php echo htmlspecialchars(get_setting('company_name')); ?>" required>
+                            <input type="text" name="company_name" class="form-control" value="<?php echo htmlspecialchars(get_setting('company_name')); ?>" required>
                         </div>
                         
                         <div class="info-grid">
                             <div class="form-group">
                                 <label>Support Email</label>
-                                <input type="email" name="company_email" value="<?php echo htmlspecialchars(get_setting('company_email')); ?>" required>
+                                <input type="email" name="company_email" class="form-control" value="<?php echo htmlspecialchars(get_setting('company_email')); ?>" required>
                             </div>
 
                             <div class="form-group">
                                 <label>Support Phone</label>
-                                <input type="text" name="company_phone" value="<?php echo htmlspecialchars(get_setting('company_phone')); ?>" required>
+                                <input type="text" name="company_phone" class="form-control" value="<?php echo htmlspecialchars(get_setting('company_phone')); ?>" required>
                             </div>
                         </div>
 
                         <div class="info-grid">
                             <div class="form-group">
                                 <label>Physical Address</label>
-                                <input type="text" name="company_address" value="<?php echo htmlspecialchars(get_setting('company_address')); ?>" placeholder="Plot 101, Great East Road">
+                                <input type="text" name="company_address" class="form-control" value="<?php echo htmlspecialchars(get_setting('company_address')); ?>" placeholder="Plot 101, Great East Road">
                             </div>
 
                             <div class="form-group">
                                 <label>TPIN Number</label>
-                                <input type="text" name="company_tpin" value="<?php echo htmlspecialchars(get_setting('company_tpin')); ?>" placeholder="100XXXXXXXX">
+                                <input type="text" name="company_tpin" class="form-control" value="<?php echo htmlspecialchars(get_setting('company_tpin')); ?>" placeholder="100XXXXXXXX">
                             </div>
                         </div>
                     </div>
@@ -223,17 +223,17 @@ $me = $stmt->fetch();
                         <div class="info-grid">
                             <div class="form-group">
                                 <label>Currency Code</label>
-                                <input type="text" name="currency" value="<?php echo htmlspecialchars(get_setting('currency', 'ZMW')); ?>" required>
+                                <input type="text" name="currency" class="form-control" value="<?php echo htmlspecialchars(get_setting('currency', 'ZMW')); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label>Tax Rate (%)</label>
-                                <input type="number" step="0.01" name="tax_rate" value="<?php echo htmlspecialchars(get_setting('tax_rate', '16')); ?>" required>
+                                <input type="number" step="0.01" name="tax_rate" class="form-control" value="<?php echo htmlspecialchars(get_setting('tax_rate', '16')); ?>" required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label>Lenco API Secret Key</label>
-                            <input type="password" name="lenco_api_key" value="<?php echo htmlspecialchars(get_setting('lenco_api_key')); ?>" placeholder="••••••••••••••••">
+                            <input type="password" name="lenco_api_key" class="form-control" value="<?php echo htmlspecialchars(get_setting('lenco_api_key')); ?>" placeholder="••••••••••••••••">
                             <small style="display: block; margin-top: 8px; color: rgba(255,255,255,0.4); font-size: 0.8rem;">Used for payment verification callbacks.</small>
                         </div>
                     </div>
@@ -263,7 +263,7 @@ $me = $stmt->fetch();
                         
                         <div class="form-group">
                             <label>Maintenance Alert Threshold (KM)</label>
-                            <input type="number" name="maintenance_threshold_km" value="<?php echo htmlspecialchars(get_setting('maintenance_threshold_km', '5000')); ?>">
+                            <input type="number" name="maintenance_threshold_km" class="form-control" value="<?php echo htmlspecialchars(get_setting('maintenance_threshold_km', '5000')); ?>">
                             <small style="display: block; margin-top: 8px; color: rgba(255,255,255,0.4); font-size: 0.8rem;">Auto-flag vehicles for service after this distance.</small>
                         </div>
 

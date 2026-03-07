@@ -185,7 +185,7 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(15, 23, 42, 0.95); /* Deep matte dark */
+            background: rgba(30, 30, 35, 0.95); /* Deep matte dark */
             backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255,255,255,0.1);
             border-radius: 24px 24px 0 0;
@@ -207,18 +207,8 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
 
         .panel-content { padding: 0 20px 20px; }
         
-        /* Search Box Dark */
-        .search-box input {
-            width: 100%;
-            background: rgba(51, 65, 85, 0.5);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 14px;
-            border-radius: 12px;
-            color: white;
-            outline: none;
-            font-family: inherit;
-        }
-        .search-box input::placeholder { color: #64748b; }
+        /* Search Box Spacing */
+        .search-box { margin-bottom: 5px; }
 
         .vehicle-list {
             margin-top: 15px;
@@ -338,7 +328,7 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
             <div class="panel-drawer" onclick="togglePanel()"></div>
             <div class="panel-content">
                 <div class="search-box">
-                    <input type="text" placeholder="Search vehicle, plate, or driver..." oninput="filterList(this.value)">
+                    <input type="text" class="form-control" placeholder="Search vehicle, plate, or driver..." oninput="filterList(this.value)">
                 </div>
                 
                 <div class="vehicle-list">

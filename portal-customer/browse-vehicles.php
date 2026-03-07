@@ -266,7 +266,7 @@ $vehicles = $stmt->fetchAll();
                 </div>
                 <form action="browse-vehicles.php" method="GET" style="display: flex; gap: 8px; width: 100%;">
                     <input type="hidden" name="status" value="<?php echo htmlspecialchars($status_filter); ?>">
-                    <input type="text" name="search" value="<?php echo htmlspecialchars($search_query); ?>" placeholder="Search car..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 15px; color: white; outline: none; font-size: 0.9rem;">
+                    <input type="text" name="search" class="form-control" value="<?php echo htmlspecialchars($search_query); ?>" placeholder="Search car..." style="flex: 1;">
                     <button type="submit" class="btn btn-primary" style="padding: 10px 15px;"><i class="fas fa-search"></i></button>
                 </form>
             </div>

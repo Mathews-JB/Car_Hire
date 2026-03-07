@@ -497,7 +497,7 @@ if (file_exists($wa_log_file)) {
                     <input type="hidden" name="action" value="send_test">
                     <div class="form-group" style="margin-bottom:16px;">
                         <label>Phone Number (Zambian format)</label>
-                        <input type="text" name="test_phone" placeholder="e.g. 0961234567 or +260961234567" required>
+                        <input type="text" name="test_phone" class="form-control" placeholder="e.g. 0961234567 or +260961234567" required>
                     </div>
                     <div class="form-group" style="margin-bottom:20px;">
                         <label>Message</label>
@@ -524,7 +524,7 @@ if (file_exists($wa_log_file)) {
                     <input type="hidden" name="action" value="send_test_sms">
                     <div class="form-group" style="margin-bottom:16px;">
                         <label>Phone Number (Zambian format)</label>
-                        <input type="text" name="test_phone_sms" placeholder="e.g. 0961234567 or +260961234567" required>
+                        <input type="text" name="test_phone_sms" class="form-control" placeholder="e.g. 0961234567 or +260961234567" required>
                     </div>
                     <div class="form-group" style="margin-bottom:20px;">
                         <label>Message</label>
@@ -588,7 +588,7 @@ if (file_exists($wa_log_file)) {
                     <input type="hidden" name="doc_type" value="NRC">
                     <div class="form-group" style="margin-bottom:20px;">
                         <label>Select Document Image (Any)</label>
-                        <input type="file" name="image" id="test_ocr_file" accept="image/*" required>
+                        <input type="file" name="image" id="test_ocr_file" class="form-control" accept="image/*" required>
                     </div>
                     <button type="submit" class="btn-wa" id="testOCRBtn" style="background: linear-gradient(135deg, var(--ocr-purple), #4f46e5); width: 100%; justify-content: center;">
                         <i class="fas fa-magic"></i> Run OCR Test
