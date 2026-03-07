@@ -35,7 +35,7 @@ if ($token) {
     <link rel="stylesheet" href="public/css/style.css">
     <style>
         body { 
-            background: url('public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -43,7 +43,7 @@ if ($token) {
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
     <div class="auth-card" style="max-width: 500px; padding: 40px; text-align: center;">
         <div style="margin-bottom: 25px;">
             <a href="index.php" class="logo" style="font-size: 2.22rem;">Car Hire</a>

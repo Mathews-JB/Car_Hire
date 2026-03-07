@@ -90,16 +90,49 @@ $platform_notifications = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>html, body { background: #080c17 !important; color: #f8fafc !important; }</style>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Customer Dashboard | Car Hire</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../public/css/style.css?v=2.3">
+    <link rel="stylesheet" href="../public/css/style.css?v=2.6">
     <style>
-        body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+        /* Aggressive Fix for Scrolling Nav Bar on Mobile */
+        .mobile-nav {
+            position: fixed !important;
+            bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+            left: 50% !important;
+            transform: translateX(-50%) translateZ(0) !important;
+            display: flex !important;
+            z-index: 999999 !important;
         }
+        
+        /* Ensure entrance animation doesn't create a persistent transform */
+        .portal-content {
+            animation: premiumEntrance 1s ease-out forwards !important;
+        }
+        
+        @keyframes premiumEntrance {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: none !important; }
+        }
+    </style>
+    <script>
+        // Hoist Nav to Body to bypass any containing block issues
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const nav = document.querySelector('.mobile-nav');
+                if (nav && nav.parentElement !== document.body) {
+                    document.body.appendChild(nav);
+                    nav.style.display = 'flex';
+                }
+            }, 50);
+        });
+    </script>
+    <style>
+        /* Modernized Stable Background - Handled by stabilized-car-bg */
+    </style>
 
         /* Desktop How It Works Sizing */
         .how-it-works-step {
@@ -336,8 +369,7 @@ $platform_notifications = $stmt->fetchAll();
         }
     </style>
 </head>
-<body>
-
+<body class="stabilized-car-bg">
     <?php include_once '../includes/mobile_header.php'; ?>
 
     <nav class="hub-bar">
@@ -544,7 +576,7 @@ $platform_notifications = $stmt->fetchAll();
                     // Special Live Tracking Card for Confirmed Journeys
                     if ($featured_booking && $featured_booking['status'] === 'confirmed'): 
                     ?>
-                        <div class="data-card" style="margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.05); background: rgba(15, 23, 42, 0.4) !important; padding: 25px;">
+                        <div class="data-card" style="margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.05); background: rgba(30, 30, 35, 0.4) !important; padding: 25px;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;">
                                 <div style="display:flex; align-items:center; gap:10px;">
                                     <span class="status-badge" style="background: var(--primary-color); color: white; padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;"><i class="fas fa-satellite"></i> LIVE JOURNEY</span>
@@ -556,7 +588,7 @@ $platform_notifications = $stmt->fetchAll();
                             <div style="position: relative; height: 180px; border-radius: 16px; overflow: hidden; margin-bottom: 0px; background: #0f172a;">
                                 <!-- Tech Radar Grid Background -->
                                 <div style="position: absolute; inset: 0; opacity: 0.3; background-image: radial-gradient(#3b82f6 0.5px, transparent 0.5px), radial-gradient(#3b82f6 0.5px, transparent 0.5px); background-size: 20px 20px; background-position: 0 0, 10px 10px;"></div>
-                                <div style="position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(15, 23, 42, 0.8) 100%);"></div>
+                                <div style="position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(30, 30, 35, 0.8) 100%);"></div>
                                 
                                 <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(37, 99, 235, 0.15), transparent);">
                                     <div style="text-align: center;">
@@ -597,7 +629,7 @@ $platform_notifications = $stmt->fetchAll();
                         </div>
                     <?php endif; ?>
 
-                    <div class="table-container activity-container" style="background: rgba(15, 23, 42, 0.4) !important;">
+                    <div class="table-container activity-container" style="background: rgba(30, 30, 35, 0.4) !important;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                             <h3><?php echo __('recent_activity'); ?></h3>
                             <a href="my-bookings.php" style="font-size: 0.85rem; color: var(--primary-color);"><?php echo __('view_all'); ?></a>
@@ -673,7 +705,7 @@ $platform_notifications = $stmt->fetchAll();
             </div> <!-- Close dashboard-grid -->
 
             <!-- Platform Notifications (Full Width for Balance) -->
-            <div class="data-card" style="margin-top: 30px; padding: 30px; border: 1px solid rgba(255,255,255,0.05); background: rgba(15, 23, 42, 0.4) !important;">
+            <div class="data-card" style="margin-top: 30px; padding: 30px; border: 1px solid rgba(255,255,255,0.05); background: rgba(30, 30, 35, 0.4) !important;">
                 <h4 style="margin-bottom: 25px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; color: white;">
                     <i class="fas fa-bell" style="color: var(--accent-color);"></i> <?php echo __('platform_updates'); ?>
                 </h4>
@@ -696,8 +728,7 @@ $platform_notifications = $stmt->fetchAll();
                 </div>
             </div>
         </div>
-    </div>
-
+    </div> <!-- Close container -->
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>

@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../public/css/style.css">
     <style>
         body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
         }
 
         @media (max-width: 768px) {
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <nav class="hub-bar">
         <a href="dashboard.php" class="logo">Car Hire</a>

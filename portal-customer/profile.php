@@ -105,7 +105,7 @@ $cover_img = !empty($user['cover_photo']) ? '../' . $user['cover_photo'] : '../p
     <link rel="stylesheet" href="../public/css/style.css">
     <style>
         body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
         }
 
         .profile-content-grid {
@@ -210,7 +210,7 @@ $cover_img = !empty($user['cover_photo']) ? '../' . $user['cover_photo'] : '../p
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <?php include_once '../includes/mobile_header.php'; ?>
 

@@ -71,27 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="public/css/style.css">
     <style>
-        .auth-container {
-            max-width: 450px;
-            margin: 100px auto;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
+        html, body { 
+            background: #080c17 !important; 
+            color: #f8fafc !important; 
+            overflow: hidden !important;
+            height: 100% !important;
         }
-        .auth-title {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .form-feedback {
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-        .error { background: #f8d7da; color: #721c24; }
-        .success { background: #d4edda; color: #155724; }
-
         
         /* Validation Feedback Styles */
         .input-wrapper {
@@ -117,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 0.75rem;
             margin-top: 5px;
             display: none;
+            background: transparent !important;
         }
         .validation-message.error {
             display: block;
@@ -143,11 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 0.6rem;
         }
         .req-item.met { color: #10b981; }
-        .req-item.met i { content: "\f00c"; } /* Check */
         
-        body { 
-            background: url('public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
-        }
         /* Loading Spinner */
         .btn-loading {
             position: relative;
@@ -198,6 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <form action="register.php" method="POST" id="registerForm">
                 <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+                <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_GET['return_url'] ?? ($_POST['return_url'] ?? '')); ?>">
                 
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 4px;">Full Name</label>
@@ -247,8 +230,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1rem; background: var(--accent-vibrant); border: none;">Register Now</button>
             </form>
             
+            <?php 
+            $login_url = "login.php";
+            $ret = $_GET['return_url'] ?? ($_POST['return_url'] ?? '');
+            if($ret) $login_url .= "?return_url=" . urlencode($ret);
+            ?>
             <p style="text-align: center; margin-top: 30px; font-size: 0.9rem; color: rgba(255,255,255,0.5);">
-                Member? <a href="login.php" style="color: var(--white); font-weight: 700; border-bottom: 1px solid var(--accent-color);">Sign In</a>
+                Member? <a href="<?php echo $login_url; ?>" style="color: var(--white); font-weight: 700; border-bottom: 1px solid var(--accent-color);">Sign In</a>
             </p>
         </div>
     </div>

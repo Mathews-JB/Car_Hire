@@ -18,10 +18,24 @@ if (empty($id)) {
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Handle incoming Booking Context (Save to Session)
+if (isset($_GET['pickup_date'])) {
+    $_SESSION['booking_query'] = [
+        'pickup_location' => $_GET['pickup_location'] ?? '',
+        'pickup_date' => $_GET['pickup_date'],
+        'pickup_time' => $_GET['pickup_time'] ?? '10:00',
+        'dropoff_date' => $_GET['dropoff_date'] ?? '',
+        'dropoff_time' => $_GET['dropoff_time'] ?? '10:00'
+    ];
+}
+
 $booking_ctx = $_SESSION['booking_query'] ?? [];
 $pickup_location = $_GET['pickup_location'] ?? ($booking_ctx['pickup_location'] ?? '');
 $pickup_date = $_GET['pickup_date'] ?? ($booking_ctx['pickup_date'] ?? '');
+$pickup_time = $_GET['pickup_time'] ?? ($booking_ctx['pickup_time'] ?? '10:00');
 $dropoff_date = $_GET['dropoff_date'] ?? ($booking_ctx['dropoff_date'] ?? '');
+$dropoff_time = $_GET['dropoff_time'] ?? ($booking_ctx['dropoff_time'] ?? '10:00');
 
 
 // Fetch vehicle details
@@ -84,10 +98,14 @@ if ($vehicle['status'] !== 'available') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="public/css/style.css?v=2.3">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="apple-touch-icon" href="public/images/icon-192x192.png">
     <style>
         .details-hero {
             padding: 120px 0 60px;
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.4));
+            background: linear-gradient(to bottom, rgba(30, 30, 35, 0.8), rgba(30, 30, 35, 0.4));
             min-height: 400px;
             display: flex;
             align-items: center;
@@ -123,7 +141,7 @@ if ($vehicle['status'] !== 'available') {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(15, 23, 42, 0.9); /* Matching dark theme background */
+            background: rgba(30, 30, 35, 0.9); /* Matching dark theme background */
             position: relative;
             flex-shrink: 0;
             text-align: center; /* Ensure text centering */
@@ -154,7 +172,7 @@ if ($vehicle['status'] !== 'available') {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(30, 30, 35, 0.8);
             backdrop-filter: blur(5px);
             padding: 5px 15px;
             border-radius: 50px;
@@ -203,9 +221,10 @@ if ($vehicle['status'] !== 'available') {
             position: sticky;
             top: 100px;
         }
-        body { 
-            background: url('public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
-        }
+        body { background: transparent !important; }
+    </style>
+</head>
+<body class="stabilized-car-bg">
         @media (max-width: 992px) {
             .details-grid { 
                 grid-template-columns: 1fr; 
@@ -341,7 +360,7 @@ if ($vehicle['status'] !== 'available') {
         
         .swiper-button-next, .swiper-button-prev {
             color: white;
-            background: rgba(15, 23, 42, 0.5);
+            background: rgba(30, 30, 35, 0.5);
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -364,7 +383,7 @@ if ($vehicle['status'] !== 'available') {
 
         .video-tour-container {
             margin-top: 30px;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(30, 30, 35, 0.6);
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.05);
@@ -461,7 +480,7 @@ if ($vehicle['status'] !== 'available') {
         .video-control-btn {
             width: 45px;
             height: 45px;
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(30, 30, 35, 0.7);
             backdrop-filter: blur(5px);
             border-radius: 50%;
             display: flex;
@@ -690,56 +709,69 @@ if ($vehicle['status'] !== 'available') {
                         <?php endif; ?>
                     </div>
 
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <i class="fas fa-users"></i>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 8px; display: block;">Select Pickup Location</label>
+                        <div style="position: relative;">
+                            <i class="fas fa-map-marker-alt" style="position: absolute; left: 15px; top: 15px; color: var(--accent-vibrant);"></i>
+                            <select name="pickup_location" id="detail_location" class="premium-select" style="padding-left: 45px; width: 100%; height: 50px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white;">
+                                <option value="Lusaka" <?php echo $pickup_location == 'Lusaka' ? 'selected' : ''; ?>>Lusaka (Central Branch)</option>
+                                <option value="Livingstone" <?php echo $pickup_location == 'Livingstone' ? 'selected' : ''; ?>>Livingstone (Airport Hub)</option>
+                                <option value="Ndola" <?php echo $pickup_location == 'Ndola' ? 'selected' : ''; ?>>Ndola (Copperbelt Branch)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 8px; display: block;">Pickup Date</label>
+                            <input type="date" id="p_date" name="pickup_date" value="<?php echo htmlspecialchars($pickup_date); ?>" min="<?php echo date('Y-m-d'); ?>" style="width: 100%; height: 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: white; padding: 0 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 8px; display: block;">Pickup Time</label>
+                            <input type="time" id="p_time" name="pickup_time" value="<?php echo htmlspecialchars($pickup_time); ?>" style="width: 100%; height: 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: white; padding: 0 10px;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                        <div class="form-group">
+                            <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 8px; display: block;">Return Date</label>
+                            <input type="date" id="d_date" name="dropoff_date" value="<?php echo htmlspecialchars($dropoff_date); ?>" min="<?php echo date('Y-m-d'); ?>" style="width: 100%; height: 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: white; padding: 0 10px;">
+                        </div>
+                        <div class="form-group">
+                            <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 8px; display: block;">Return Time</label>
+                            <input type="time" id="d_time" name="dropoff_time" value="<?php echo htmlspecialchars($dropoff_time); ?>" style="width: 100%; height: 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: white; padding: 0 10px;">
+                        </div>
+                    </div>
+
+                    <div class="spec-grid" style="margin-bottom: 25px; grid-template-columns: 1fr 1fr;">
+                        <div class="spec-item" style="padding: 10px; background: rgba(255,255,255,0.02); border-radius: 12px;">
+                            <i class="fas fa-users" style="font-size: 0.9rem;"></i>
                             <div>
-                                <span class="spec-label">Capacity</span>
-                                <span class="spec-value"><?php echo $vehicle['capacity']; ?> Passengers</span>
+                                <span class="spec-label" style="font-size: 0.65rem;">Capacity</span>
+                                <span class="spec-value" style="font-size: 0.8rem;"><?php echo $vehicle['capacity']; ?> Pers</span>
                             </div>
                         </div>
-                        <div class="spec-item">
-                            <i class="fas fa-gas-pump"></i>
+                        <div class="spec-item" style="padding: 10px; background: rgba(255,255,255,0.02); border-radius: 12px;">
+                            <i class="fas fa-cog" style="font-size: 0.9rem;"></i>
                             <div>
-                                <span class="spec-label">Fuel Type</span>
-                                <span class="spec-value"><?php echo $vehicle['fuel_type']; ?></span>
-                            </div>
-                        </div>
-                        <div class="spec-item">
-                            <i class="fas fa-cog"></i>
-                            <div>
-                                <span class="spec-label">Transmission</span>
-                                <span class="spec-value">Automatic</span>
-                            </div>
-                        </div>
-                        <div class="spec-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <div>
-                                <span class="spec-label">Year</span>
-                                <span class="spec-value"><?php echo $vehicle['year']; ?> Model</span>
+                                <span class="spec-label" style="font-size: 0.65rem;">Trans</span>
+                                <span class="spec-value" style="font-size: 0.8rem;">Auto</span>
                             </div>
                         </div>
                     </div>
 
                     <?php 
-                    // Build Booking URL with Params
-                    $bookParams = ['vehicle_id' => $vehicle['id']];
-                    if(!empty($pickup_date)) $bookParams['pickup_date'] = $pickup_date;
-                    if(!empty($dropoff_date)) $bookParams['dropoff_date'] = $dropoff_date;
-                    if(!empty($pickup_location)) $bookParams['location'] = $pickup_location;
+                    // Initial Booking Parameters
+                    $bookParams = [
+                        'vehicle_id' => $vehicle['id'],
+                        'location' => $pickup_location,
+                        'pickup_date' => $pickup_date,
+                        'pickup_time' => $pickup_time,
+                        'dropoff_date' => $dropoff_date,
+                        'dropoff_time' => $dropoff_time
+                    ];
                     $bookUrl = "portal-customer/booking-form.php?" . http_build_query($bookParams);
                     $encodedBookUrl = urlencode($bookUrl);
-                    ?>
-
-                    <?php 
-                    $actionUrl = $bookUrl;
-                    $signInUrl = "login.php?msg=not_logged_in&return_url=" . $encodedBookUrl;
-                    
-                    // If dates missing, redirect to fleet to set them (triggers warning)
-                    if(empty($pickup_date)) {
-                        $actionUrl = "our-fleet.php?trigger_warning=1";
-                        $signInUrl = "our-fleet.php?trigger_warning=1";
-                    }
                     ?>
 
                     <?php if(!$is_available): ?>
@@ -750,9 +782,9 @@ if ($vehicle['status'] !== 'available') {
                         <button disabled class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; font-weight: 800; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); border: none; cursor: not-allowed;">Currently Unavailable</button>
                     <?php else: ?>
                         <?php if(isset($_SESSION['user_id'])): ?>
-                            <a href="<?php echo $actionUrl; ?>" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; font-weight: 800; background: var(--accent-vibrant); border: none; box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);">Book This Ride</a>
+                            <a href="<?php echo $bookUrl; ?>" id="bookBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; font-weight: 800; background: var(--accent-vibrant); border: none; box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);">Rent This Car Now</a>
                         <?php else: ?>
-                            <a href="<?php echo $signInUrl; ?>" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; font-weight: 800; background: var(--accent-vibrant); border: none;">Sign In to Book</a>
+                            <a href="login.php?msg=not_logged_in&return_url=<?php echo $encodedBookUrl; ?>" id="bookBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; font-weight: 800; background: var(--accent-vibrant); border: none;">Sign In to Rent</a>
                         <?php endif; ?>
                     <?php endif; ?>
 
@@ -773,29 +805,7 @@ if ($vehicle['status'] !== 'available') {
     </main>
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <h4 style="text-align: center; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 30px;">Reach Us</h4>
-            <div class="footer-contact-row">
-                <div class="footer-contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>+260 970 000 000</span>
-                </div>
-                <div class="footer-contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>info@CarHire.zm</span>
-                </div>
-                <div class="footer-contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Lusaka, Zambia</span>
-                </div>
-            </div>
-            
-            <div class="footer-copyright">
-                <p>&copy; <?php echo date('Y'); ?> Car Hire Zambia. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <?php include_once 'includes/footer.php'; ?>
 
     <?php include_once 'includes/mobile_nav.php'; ?>
 
@@ -815,6 +825,59 @@ if ($vehicle['status'] !== 'available') {
                 delay: 5000,
                 disableOnInteraction: false,
             },
+        });
+
+        // Comprehensive Dynamic Link Update
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = {
+                location: document.getElementById('detail_location'),
+                pickup_date: document.getElementById('p_date'),
+                pickup_time: document.getElementById('p_time'),
+                dropoff_date: document.getElementById('d_date'),
+                dropoff_time: document.getElementById('d_time')
+            };
+            const bookBtn = document.getElementById('bookBtn');
+            
+            if(bookBtn) {
+                const updateUrl = () => {
+                    try {
+                        let currentUrl = bookBtn.getAttribute('href');
+                        let isLoginRedirect = currentUrl.includes('return_url=');
+                        
+                        let baseUrl, targetUrl;
+                        if(isLoginRedirect) {
+                            let parts = currentUrl.split('return_url=');
+                            baseUrl = parts[0] + 'return_url=';
+                            targetUrl = decodeURIComponent(parts[1]);
+                        } else {
+                            baseUrl = '';
+                            targetUrl = currentUrl;
+                        }
+
+                        // Split path and query to preserve relative paths correctly
+                        let urlParts = targetUrl.split('?');
+                        let path = urlParts[0];
+                        let params = new URLSearchParams(urlParts[1] || '');
+                        
+                        // Update all params from inputs
+                        for(let key in inputs) {
+                            if(inputs[key] && inputs[key].value) {
+                                let paramKey = key === 'location' ? 'location' : key;
+                                params.set(paramKey, inputs[key].value);
+                            }
+                        }
+
+                        let finalTarget = path + '?' + params.toString();
+                        bookBtn.href = isLoginRedirect ? baseUrl + encodeURIComponent(finalTarget) : finalTarget;
+                        
+                    } catch(e) { console.error("Dynamic Sync Failed", e); }
+                };
+
+                // Attach listeners to all inputs
+                Object.values(inputs).forEach(input => {
+                    if(input) input.addEventListener('change', updateUrl);
+                });
+            }
         });
     </script>
 </body>

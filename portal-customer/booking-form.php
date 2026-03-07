@@ -238,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../public/css/style.css">
     <style>
         body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
         }
         @media (max-width: 768px) {
             .dashboard-grid {
@@ -294,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <header class="header-solid">
         <div class="container nav">

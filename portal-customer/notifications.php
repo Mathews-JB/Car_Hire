@@ -28,9 +28,9 @@ $notifications = $stmt->fetchAll();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css?v=2.3">
     <style>
-        body { background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important; }
+        body { background: transparent !important; }
         .notif-item {
-            background: rgba(15, 23, 42, 0.4);
+            background: rgba(30, 30, 35, 0.4);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
@@ -67,7 +67,7 @@ $notifications = $stmt->fetchAll();
         .type-danger { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
     <nav class="hub-bar">
         <a href="dashboard.php" class="logo">Car Hire</a>
         <div class="hub-nav">
@@ -87,7 +87,7 @@ $notifications = $stmt->fetchAll();
             </div>
 
             <?php if (empty($notifications)): ?>
-                <div style="text-align: center; padding: 60px; background: rgba(15, 23, 42, 0.4); border-radius: 24px; border: 1px dashed rgba(255,255,255,0.1);">
+                <div style="text-align: center; padding: 60px; background: rgba(30, 30, 35, 0.4); border-radius: 24px; border: 1px dashed rgba(255,255,255,0.1);">
                     <i class="fas fa-bell-slash" style="font-size: 3rem; opacity: 0.1; margin-bottom: 15px; display: block;"></i>
                     <p style="opacity:0.5;">No notifications yet.</p>
                 </div>

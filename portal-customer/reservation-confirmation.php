@@ -38,11 +38,11 @@ if (!$booking) {
     <link rel="stylesheet" href="../public/css/style.css">
     <style>
         body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
+            background: transparent !important;
         }
     </style>
 </head>
-<body>
+<body class="stabilized-car-bg">
 
     <header class="header-solid">
         <div class="container nav">

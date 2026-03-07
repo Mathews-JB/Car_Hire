@@ -70,9 +70,7 @@ $search_query = trim($_GET['search'] ?? '');
         .fleet-img { width: 100%; height: 220px; object-fit: cover; }
         .fleet-info { padding: 25px; }
         .search-compact { margin-top: -40px; position: relative; z-index: 100; }
-        body { 
-            background: url('public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
-        }
+        body { background: transparent !important; }
 
         @media (max-width: 768px) {
             .container {
@@ -256,46 +254,16 @@ $search_query = trim($_GET['search'] ?? '');
 
     <!-- Compact Search -->
     <div class="container search-compact">
-        <div class="auth-card" style="max-width: 100%; border-radius: 24px; padding: 35px;">
-            <form action="our-fleet.php" method="GET" class="search-form" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px;">
+        <div class="auth-card" style="max-width: 800px; margin: 0 auto; border-radius: 24px; padding: 25px; border: 1px solid rgba(255,255,255,0.05);">
+            <form action="our-fleet.php" method="GET" class="search-form" style="display: flex; gap: 15px; width: 100%;">
                 <input type="hidden" name="brand" value="<?php echo htmlspecialchars($brand_id); ?>">
-                <div class="form-group" style="grid-column: span 5;">
-                    <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 5px; display: block;">Search Vehicle (Make, Model, or Type)</label>
-                    <input type="text" name="search" value="<?php echo htmlspecialchars($search_query); ?>" placeholder="e.g. Prado, BMW, SUV..." style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); height: 50px; border-radius: 12px; padding: 0 15px; color: white;">
-                </div>
-                <div class="form-group">
-                    <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 5px; display: block;">Location</label>
-                    <select name="pickup_location" class="premium-select" style="width: 100%; height: 50px;">
-                        <option value="">All Locations</option>
-                        <option value="Lusaka" <?php echo $pickup_location == 'Lusaka' ? 'selected' : ''; ?>>Lusaka</option>
-                        <option value="Livingstone" <?php echo $pickup_location == 'Livingstone' ? 'selected' : ''; ?>>Livingstone</option>
-                        <option value="Ndola" <?php echo $pickup_location == 'Ndola' ? 'selected' : ''; ?>>Ndola</option>
-                    </select>
-                </div>
-                <div class="form-group" style="display: flex; gap: 5px;">
-                    <div style="flex: 2;">
-                        <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 5px; display: block;">Pickup</label>
-                        <input type="date" name="pickup_date" value="<?php echo htmlspecialchars($pickup_date); ?>" min="<?php echo date('Y-m-d'); ?>" style="width: 100%; height: 50px;">
-                    </div>
-                    <div style="flex: 1;">
-                        <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 5px; display: block;">Time</label>
-                        <input type="time" name="pickup_time" value="<?php echo htmlspecialchars($pickup_time); ?>" style="width: 100%; height: 50px;">
+                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                    <div style="position: relative;">
+                        <i class="fas fa-search" style="position: absolute; left: 15px; top: 18px; color: var(--accent-vibrant);"></i>
+                        <input type="text" name="search" value="<?php echo htmlspecialchars($search_query); ?>" placeholder="Search Vehicle (Make, Model, or Type)..." style="width: 100%; height: 50px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0 15px 0 45px; color: white; outline: none;">
                     </div>
                 </div>
-                <div class="form-group" style="display: flex; gap: 5px;">
-                    <div style="flex: 2;">
-                        <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 5px; display: block;">Return</label>
-                        <input type="date" name="dropoff_date" value="<?php echo htmlspecialchars($dropoff_date); ?>" min="<?php echo date('Y-m-d'); ?>" style="width: 100%; height: 50px;">
-                    </div>
-                    <div style="flex: 1;">
-                        <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 5px; display: block;">Time</label>
-                        <input type="time" name="dropoff_time" value="<?php echo htmlspecialchars($dropoff_time); ?>" style="width: 100%; height: 50px;">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label style="opacity:0">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary" style="height: 50px; width: 100%; border-radius: 12px; background: var(--accent-vibrant); font-weight: 700;">Search</button>
-                </div>
+                <button type="submit" class="btn btn-primary" style="height: 50px; padding: 0 30px; border-radius: 12px; background: var(--accent-vibrant); font-weight: 700;">Search</button>
             </form>
         </div>
     </div>
@@ -437,29 +405,7 @@ $search_query = trim($_GET['search'] ?? '');
     </main>
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <h4 style="text-align: center; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 30px;">Reach Us</h4>
-            <div class="footer-contact-row">
-                <div class="footer-contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>+260 970 000 000</span>
-                </div>
-                <div class="footer-contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>info@CarHire.zm</span>
-                </div>
-                <div class="footer-contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Lusaka, Zambia</span>
-                </div>
-            </div>
-            
-            <div class="footer-copyright">
-                <p>&copy; <?php echo date('Y'); ?> Car Hire Zambia. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <?php include_once 'includes/footer.php'; ?>
 
     <?php include_once 'includes/mobile_nav.php'; ?>
     <script>
