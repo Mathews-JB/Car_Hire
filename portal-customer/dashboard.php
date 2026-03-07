@@ -132,8 +132,6 @@ $platform_notifications = $stmt->fetchAll();
     </script>
     <style>
         /* Modernized Stable Background - Handled by stabilized-car-bg */
-    </style>
-
         /* Desktop How It Works Sizing */
         .how-it-works-step {
             min-height: 250px !important;
