@@ -222,9 +222,7 @@ if ($vehicle['status'] !== 'available') {
             top: 100px;
         }
         body { background: transparent !important; }
-    </style>
-</head>
-<body class="stabilized-car-bg">
+
         @media (max-width: 992px) {
             .details-grid { 
                 grid-template-columns: 1fr; 
@@ -498,7 +496,7 @@ if ($vehicle['status'] !== 'available') {
     </style>
     <link rel="stylesheet" href="public/css/notification.css">
 </head>
-<body>
+<body class="stabilized-car-bg">
     <!-- Header -->
 
 
