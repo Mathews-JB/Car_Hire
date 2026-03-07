@@ -3287,3 +3287,111 @@ body.splash-loaded .app-splash {
 
 button.hub-item { background: transparent; border: none; padding: 0; outline: none; cursor: pointer; color: inherit; width: 100%; font-family: inherit; }
 
+/* ============================================
+   PREMIUM MODAL TRANSITION SYSTEM
+   ============================================ */
+
+/* --- Modal Overlay (Backdrop) --- */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 12, 23, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              -webkit-backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When overlay becomes visible via JS */
+.modal-overlay.modal-visible {
+  display: flex !important;
+  background: rgba(8, 12, 23, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* --- Modal Content (The card/panel) --- */
+.modal-overlay .modal-content {
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-overlay.modal-visible .modal-content {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Exit animation state */
+.modal-overlay.modal-closing {
+  background: rgba(8, 12, 23, 0) !important;
+  backdrop-filter: blur(0px) !important;
+  -webkit-backdrop-filter: blur(0px) !important;
+}
+
+.modal-overlay.modal-closing .modal-content {
+  opacity: 0 !important;
+  transform: translateY(30px) scale(0.96) !important;
+}
+
+/* --- Modal Header --- */
+.modal-header {
+  padding: 20px 25px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-header h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+}
+
+/* --- Close Button --- */
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.8rem;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 10;
+  line-height: 1;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.close-modal:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
+}
+
+/* --- Scroll Styling for Modal Content --- */
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}

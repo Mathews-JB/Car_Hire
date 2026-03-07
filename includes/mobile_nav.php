@@ -32,9 +32,9 @@ if ($is_logged_in) {
         position: fixed;
         inset: 0;
         z-index: 200000;
-        background: rgba(0,0,0,0.85);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+    background: rgba(8, 12, 23, 0.6) !important;
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
     }
     #v3MoreDrawer.active {
         display: block !important;
@@ -47,15 +47,15 @@ if ($is_logged_in) {
         background: #1a1a1f;
         border-radius: 30px 30px 0 0;
         padding: 30px 20px 40px;
-        transform: translateY(100%);
-        transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
-        border-top: 1px solid rgba(255,255,255,0.1);
-        max-height: 85vh;
-        overflow-y: auto;
-    }
-    #v3MoreDrawer.active .v3-drawer-panel {
-        transform: translateY(0);
-    }
+    transform: translateY(100%) scale(1.05); /* Added scale shift */
+    transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    max-height: 85vh;
+    overflow-y: auto;
+}
+#v3MoreDrawer.active .v3-drawer-panel {
+    transform: translateY(0) scale(1);
+}
     .v3-menu-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -137,7 +137,7 @@ if ($is_logged_in) {
         <div class="v3-close-btn" onclick="v3CloseDrawer()">
             <i class="fas fa-times"></i>
         </div>
-        
+
         <?php if ($user_role === 'admin'): ?>
             <h3 style="color:white; margin: 0 0 5px 10px; font-size: 1.3rem; font-weight: 900; letter-spacing: -0.5px;">Control Panel</h3>
             <p style="color:rgba(255,255,255,0.4); margin: 0 0 20px 10px; font-size: 0.8rem;">Select a module to manage</p>
@@ -196,6 +196,10 @@ if ($is_logged_in) {
                     <i class="fas fa-file-invoice-dollar"></i>
                     <span>Financials</span>
                 </a>
+                <a href="expenses.php" class="v3-menu-item">
+                    <i class="fas fa-wallet"></i>
+                    <span>Operating Expenses</span>
+                </a>
 
                 <!-- System Group -->
                 <div class="v3-menu-section-title">System & Security</div>
@@ -222,6 +226,14 @@ if ($is_logged_in) {
                 <a href="translations.php" class="v3-menu-item">
                     <i class="fas fa-language"></i>
                     <span>Localize (ZED)</span>
+                </a>
+                <a href="audit-logs.php" class="v3-menu-item">
+                    <i class="fas fa-fingerprint"></i>
+                    <span>Audit Logs</span>
+                </a>
+                <a href="backups.php" class="v3-menu-item">
+                    <i class="fas fa-database"></i>
+                    <span>Backups</span>
                 </a>
                 <a href="security.php" class="v3-menu-item">
                     <i class="fas fa-shield-alt"></i>
@@ -419,4 +431,174 @@ if ($is_logged_in) {
             }
         }, false);
     })();
+
+    // --- PWA & APK INSTALLATION LOGIC ---
+    let deferredPrompt;
+    let installVisible = false;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    function showInstallProvisions() {
+        if (installVisible) return;
+        
+        const banner = document.getElementById('pwa-install-banner');
+        const landingBanner = document.getElementById('landing-pwa-banner');
+
+        // Only show if mobile OR deferredPrompt is present (Desktop PWA)
+        if (!isMobile && !deferredPrompt) return;
+
+        installVisible = true;
+
+        // Delayed appearance for "Premium" feel
+        setTimeout(() => {
+            if (banner) banner.style.display = 'flex';
+            
+            if (landingBanner) {
+                landingBanner.style.display = 'flex';
+                setTimeout(() => {
+                    landingBanner.style.opacity = '1';
+                    landingBanner.style.transform = 'translateX(-50%) translateY(0)';
+                }, 50);
+
+                // Auto-hide after 12 seconds if no interaction
+                setTimeout(() => {
+                    if (landingBanner.style.opacity === '1' && !window.installingApp) {
+                        hideLandingBanner();
+                    }
+                }, 12000);
+            }
+        }, 3500);
+    }
+
+    function hideLandingBanner() {
+        const landingBanner = document.getElementById('landing-pwa-banner');
+        if (landingBanner) {
+            landingBanner.style.opacity = '0';
+            landingBanner.style.transform = 'translateX(-50%) translateY(50px)';
+            setTimeout(() => { landingBanner.style.display = 'none'; }, 600);
+        }
+    }
+
+    // Trigger for Desktop PWA
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallProvisions();
+    });
+
+    // Auto-trigger for Mobile APK
+    if (isMobile) {
+        window.addEventListener('load', () => {
+            showInstallProvisions();
+        });
+    }
+
+    const installBtns = [document.getElementById('pwa-install-btn'), document.getElementById('landing-pwa-btn')];
+    installBtns.forEach(btn => {
+        if (btn) {
+            btn.addEventListener('click', (e) => {
+                const textEl = btn.querySelector('#pwa-text') || { innerHTML: '' };
+                const iconEl = btn.querySelector('#pwa-icon') || { className: '' };
+                const progressContainer = document.getElementById('pwa-progress-container');
+                const progressBar = document.getElementById('pwa-progress-bar');
+
+                window.installingApp = true;
+                
+                if (isMobile) {
+                    // --- MOBILE: FULLY AUTOMATED BACKGROUND APK INSTALL ---
+                    btn.style.pointerEvents = 'none';
+                    if (textEl) textEl.innerHTML = 'Installing...';
+                    if (iconEl) {
+                        iconEl.className = 'fas fa-cog fa-spin';
+                        iconEl.style.color = '#cbd5e1';
+                    }
+                    if (progressContainer) progressContainer.style.display = 'block';
+
+                    const apkPath = window.location.pathname.includes('/portal-') ? '../CarHire_Professional_v5.apk' : 'CarHire_Professional_v5.apk';
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', apkPath, true);
+                    xhr.responseType = 'blob';
+
+                    xhr.onprogress = (event) => {
+                        if (event.lengthComputable) {
+                            const percent = (event.loaded / event.total) * 100;
+                            if (progressBar) progressBar.style.width = percent + '%';
+                        }
+                    };
+
+                    xhr.onload = function() {
+                        if (this.status === 200) {
+                            // UI Feedback for completion
+                            if (textEl) textEl.innerHTML = 'Finished!';
+                            if (iconEl) {
+                                iconEl.className = 'fas fa-check-circle';
+                                iconEl.style.color = '#10b981';
+                            }
+                            if (progressBar) progressBar.style.background = '#10b981';
+
+                            // Trigger the actual file start
+                            const blob = this.response;
+                            const link = document.createElement('a');
+                            link.href = window.URL.createObjectURL(blob);
+                            link.download = 'CarHire_Professional_v5.apk';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            
+                            // Auto-exit after a short delay
+                            setTimeout(() => {
+                                hideLandingBanner();
+                                if (document.getElementById('pwa-install-banner')) document.getElementById('pwa-install-banner').style.display = 'none';
+                            }, 1500);
+                        }
+                    };
+
+                    xhr.send();
+
+                } else if (deferredPrompt) {
+                    // --- DESKTOP: PREMIUM PWA INSTALL ---
+                    if (textEl) textEl.innerHTML = 'Getting App...';
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((result) => {
+                        if (result.outcome === 'accepted') {
+                            if (textEl) textEl.innerHTML = 'Installed!';
+                            setTimeout(() => {
+                                if (document.getElementById('pwa-install-banner')) document.getElementById('pwa-install-banner').style.display = 'none';
+                                hideLandingBanner();
+                            }, 2000);
+                        } else {
+                            if (textEl) textEl.innerHTML = 'INSTALL';
+                            window.installingApp = false;
+                        }
+                        deferredPrompt = null;
+                    });
+                }
+            });
+        }
+    });
+
+    // Hide banner once app is installed
+    window.addEventListener('appinstalled', (evt) => {
+        console.log('Car Hire was installed');
+        const banner = document.getElementById('pwa-install-banner');
+        if (banner) banner.style.display = 'none';
+        hideLandingBanner();
+    });
+
+    // --- UNIVERSAL SERVICE WORKER REGISTRATION ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            // Locate sw.js based on path depth
+            const swPath = window.location.pathname.includes('/portal-') ? '../sw.js' : 'sw.js';
+            navigator.serviceWorker.register(swPath)
+                .then(reg => console.log('PWA Service Worker Active'))
+                .catch(err => console.log('SW Registration Error', err));
+        });
+    }
 </script>
+
+<?php
+    // Global Modal Transition System
+    $modal_js_path = $is_in_portal ? '../public/js/modal-transitions.js' : 'public/js/modal-transitions.js';
+?>
+<script src="<?php echo $modal_js_path; ?>"></script>
