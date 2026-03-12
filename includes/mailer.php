@@ -73,7 +73,7 @@ class CarHireMailer {
                         .footer { background: #f8fafc; padding: 20px 30px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
                         .btn { background: #2563eb; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: 700; display: inline-block; margin-top: 20px; }
                     </style>
-                </head>
+</head>
                 <body>
                     <div class='container'>
                         <div class='header'>

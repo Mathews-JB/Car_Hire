@@ -98,16 +98,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="public/css/theme.css?v=4.0">
+    <script src="public/js/theme-switcher.js?v=4.0"></script>
     <style>
-        @media (min-width: 769px) {
-            body { 
-                background: url('public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
-            }
-        }
-        @media (max-width: 768px) {
-            body {
-                background: #111827 !important;
-            }
+        html, body { 
+            overflow: hidden !important;
+            height: 100% !important;
+            margin: 0;
+            padding: 0;
         }
         .input-wrapper {
             position: relative;
@@ -129,6 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="auth-bg">
+        <!-- Floating Theme Switcher for Reset -->
+        <div style="position: fixed; z-index: 1000; top: 15px; right: 15px;">
+            <?php include_once 'includes/theme_switcher.php'; ?>
+        </div>
         <div class="auth-card">
             <div style="text-align: center; margin-bottom: 40px;">
                 <a href="index.php" class="logo" style="font-size: 2.22rem; display: block; margin-bottom: 5px;">Car Hire</a>

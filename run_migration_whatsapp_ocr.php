@@ -89,6 +89,9 @@ if (!file_exists($htaccess)) {
         .error { color: #fca5a5; }
         .btn { display: inline-block; margin-top: 20px; padding: 12px 24px; background: #25D366; color: #000; border-radius: 8px; text-decoration: none; font-weight: 700; }
     </style>
+    <!-- Theme System -->
+    <link rel="stylesheet" href="public/css/theme.css?v=4.0">
+    <script src="public/js/theme-switcher.js?v=4.0"></script>
 </head>
 <body>
     <h1>🚀 WhatsApp & OCR Migration</h1>

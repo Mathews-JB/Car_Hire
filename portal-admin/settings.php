@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -13,7 +13,7 @@ $error = $_SESSION['flash_error'] ?? '';
 unset($_SESSION['flash_success'], $_SESSION['flash_error']);
 
 // Handle Updates
-// ── Security Actions (Recovery Key & Account Freeze) ─────────────────────────
+// â”€â”€ Security Actions (Recovery Key & Account Freeze) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $_SESSION['user_id'];
     
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ── General Settings Updates ────────────────────────────────────────────────
+// â”€â”€ General Settings Updates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tax_rate'])) {
     verify_csrf_token($_POST['csrf_token'] ?? '');
     
@@ -135,6 +135,9 @@ $me = $stmt->fetch();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .settings-grid { 
             display: grid; 
@@ -148,6 +151,7 @@ $me = $stmt->fetch();
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
@@ -233,11 +237,10 @@ $me = $stmt->fetch();
 
                         <div class="form-group">
                             <label>Lenco API Secret Key</label>
-                            <input type="password" name="lenco_api_key" class="form-control" value="<?php echo htmlspecialchars(get_setting('lenco_api_key')); ?>" placeholder="••••••••••••••••">
+                            <input type="password" name="lenco_api_key" class="form-control" value="<?php echo htmlspecialchars(get_setting('lenco_api_key')); ?>" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
                             <small style="display: block; margin-top: 8px; color: rgba(255,255,255,0.4); font-size: 0.8rem;">Used for payment verification callbacks.</small>
                         </div>
                     </div>
-
                     <!-- Security Control -->
                     <div class="config-card">
                         <div class="config-title"><i class="fas fa-shield-alt"></i> Security Center</div>
@@ -246,13 +249,21 @@ $me = $stmt->fetch();
                             <div class="form-group">
                                 <label>Master Recovery Key</label>
                                 <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-bottom: 12px;">Reset code if locked out.</p>
-                                <button type="button" class="btn btn-outline" style="width: 100%; border-color: #3b82f6; color: #3b82f6; font-size: 0.75rem;" onclick="if(confirm('Generate new recovery key? This will invalidate your old one.')) document.getElementById('genKeyForm').submit();">Generate Key</button>
+                                <form action="" method="POST" onsubmit="return confirm('Generate new recovery key? This will invalidate your old one.');">
+                                    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+                                    <input type="hidden" name="generate_key" value="1">
+                                    <button type="submit" class="btn btn-outline" style="width: 100%; border-color: #3b82f6; color: #3b82f6; font-size: 0.75rem;">Generate Key</button>
+                                </form>
                             </div>
 
                             <div class="form-group">
                                 <label style="color: #ef4444;">Account Freeze</label>
                                 <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-bottom: 12px;">Instantly disable account.</p>
-                                <button type="button" class="btn btn-outline" style="width: 100%; border-color: #ef4444; color: #ef4444; font-size: 0.75rem;" onclick="if(confirm('DANGER: This will instantly lock you out. Continue?')) document.getElementById('freezeForm').submit();">Freeze Account</button>
+                                <form action="" method="POST" onsubmit="return confirm('DANGER: This will instantly lock you out. Continue?');">
+                                    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+                                    <input type="hidden" name="freeze_account" value="1">
+                                    <button type="submit" class="btn btn-outline" style="width: 100%; border-color: #ef4444; color: #ef4444; font-size: 0.75rem;">Freeze Account</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -266,6 +277,7 @@ $me = $stmt->fetch();
                             <input type="number" name="maintenance_threshold_km" class="form-control" value="<?php echo htmlspecialchars(get_setting('maintenance_threshold_km', '5000')); ?>">
                             <small style="display: block; margin-top: 8px; color: rgba(255,255,255,0.4); font-size: 0.8rem;">Auto-flag vehicles for service after this distance.</small>
                         </div>
+
 
                         <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; border: 1px dashed rgba(255, 255, 255, 0.1); margin-top: 30px;">
                             <label style="margin-bottom: 5px; color: rgba(255, 255, 255, 0.6); display: flex; justify-content: space-between; align-items: center;">
@@ -301,3 +313,4 @@ $me = $stmt->fetch();
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

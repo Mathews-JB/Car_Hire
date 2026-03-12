@@ -79,24 +79,31 @@ $fleet_reserved = $stmt->fetchColumn();
 $stmt = $pdo->query("SELECT COUNT(*) FROM bookings WHERE status = 'confirmed' AND DATE(pickup_date) = CURDATE()");
 $fleet_awaiting = $stmt->fetchColumn();
 
-// Fetch Latest Platform Notifications (Global or User-Specific, excluding sensitive types)
+// Fetch Latest Platform Notifications (Global or User-Specific, excluding sensitive/redundant types)
 $stmt = $pdo->prepare("SELECT * FROM notifications 
                        WHERE (user_id = ? OR user_id IS NULL) 
-                       AND type NOT IN ('security', 'system', 'error') 
-                       ORDER BY created_at DESC LIMIT 5");
+                       AND type NOT IN ('security', 'system', 'error', 'verify') 
+                       ORDER BY created_at DESC LIMIT 3");
 $stmt->execute([$user_id]);
 $platform_notifications = $stmt->fetchAll();
+
+// Fetch Unread Notification Count
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
+$stmt->execute([$user_id]);
+$unread_count = $stmt->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>html, body { background: #080c17 !important; color: #f8fafc !important; }</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Customer Dashboard | Car Hire</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css?v=2.6">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         /* Aggressive Fix for Scrolling Nav Bar on Mobile */
         .mobile-nav {
@@ -116,6 +123,12 @@ $platform_notifications = $stmt->fetchAll();
         @keyframes premiumEntrance {
             0% { opacity: 0; transform: translateY(15px); }
             100% { opacity: 1; transform: none !important; }
+        }
+        .notif-card-mini:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.06) !important;
+            border-color: rgba(255,255,255,0.1) !important;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
     </style>
     <script>
@@ -380,11 +393,22 @@ $platform_notifications = $stmt->fetchAll();
             <a href="profile.php"><?php echo __('profile'); ?></a>
         </div>
         <div class="hub-user">
+            <!-- Theme Switcher -->
+            <?php include '../includes/theme_switcher.php'; ?>
+            
             <?php 
                 $display_name = $_SESSION['user_name'] ?? 'User';
                 $first_name = explode(' ', $display_name)[0];
                 $initial = !empty($display_name) ? strtoupper($display_name[0]) : 'U';
             ?>
+            <!-- Notifications Bell -->
+            <a href="notifications.php" style="position: relative; margin-right: 15px; text-decoration: none; color: white; display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; background: rgba(255,255,255,0.05); border-radius: 50%;">
+                <i class="fas fa-bell" style="font-size: 1.1rem; opacity: 0.8;"></i>
+                <?php if ($unread_count > 0): ?>
+                    <span style="position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 50%; font-weight: 800; border: 2px solid #0f172a;"><?php echo $unread_count; ?></span>
+                <?php endif; ?>
+            </a>
+
             <span class="hub-user-name"><?php echo htmlspecialchars($first_name); ?></span>
             <div class="hub-avatar"><?php echo htmlspecialchars($initial); ?></div>
             <a href="../logout.php" style="color: var(--danger); margin-left: 10px; font-size: 0.85rem;"><i class="fas fa-sign-out-alt"></i></a>
@@ -703,23 +727,30 @@ $platform_notifications = $stmt->fetchAll();
             </div> <!-- Close dashboard-grid -->
 
             <!-- Platform Notifications (Full Width for Balance) -->
-            <div class="data-card" style="margin-top: 30px; padding: 30px; border: 1px solid rgba(255,255,255,0.05); background: rgba(30, 30, 35, 0.4) !important;">
-                <h4 style="margin-bottom: 25px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; color: white;">
-                    <i class="fas fa-bell" style="color: var(--accent-color);"></i> <?php echo __('platform_updates'); ?>
-                </h4>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div class="data-card" style="margin-top: 30px; padding: 25px; border: 1px solid rgba(255,255,255,0.05); background: rgba(30, 30, 35, 0.4) !important; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <h4 style="font-size: 1.1rem; display: flex; align-items: center; gap: 10px; color: white; margin: 0;">
+                        <i class="fas fa-bullhorn" style="color: var(--accent-color);"></i> <?php echo __('platform_updates'); ?>
+                    </h4>
+                    <a href="notifications.php" style="font-size: 0.8rem; color: var(--accent-color); font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 5px;">
+                        <?php echo __('view_all_history'); ?> <i class="fas fa-arrow-right" style="font-size: 0.7rem;"></i>
+                    </a>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
                     <?php if (empty($platform_notifications)): ?>
-                        <p style="font-size: 0.85rem; opacity: 0.6;">No recent updates currently.</p>
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 30px; opacity: 0.5;">
+                            <p style="font-size: 0.85rem; margin: 0;">No new updates at the moment.</p>
+                        </div>
                     <?php else: ?>
                         <?php foreach ($platform_notifications as $n): ?>
-                            <div style="padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03);">
-                                <strong style="display: block; font-size: 0.95rem; margin-bottom: 8px; color: white;"><?php echo htmlspecialchars($n['title']); ?></strong>
-                                <p style="font-size: 0.85rem; opacity: 0.7; margin: 0; line-height: 1.6;"><?php echo htmlspecialchars($n['message']); ?></p>
-                                <div style="margin-top: 12px; display: flex; justify-content: flex-end;">
-                                    <small style="font-size: 0.75rem; opacity: 0.4; font-weight: 600;">
-                                        <i class="far fa-clock"></i> <?php echo date('d M, Y', strtotime($n['created_at'])); ?>
-                                    </small>
+                            <div class="notif-card-mini" style="padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent-color); opacity: 0.5;"></div>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                    <strong style="font-size: 0.9rem; color: white;"><?php echo htmlspecialchars($n['title']); ?></strong>
+                                    <small style="font-size: 0.65rem; opacity: 0.4; white-space: nowrap;"><?php echo date('d M', strtotime($n['created_at'])); ?></small>
                                 </div>
+                                <p style="font-size: 0.75rem; opacity: 0.7; margin: 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><?php echo htmlspecialchars($n['message']); ?></p>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>

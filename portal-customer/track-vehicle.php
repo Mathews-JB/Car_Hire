@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../includes/env_loader.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
@@ -38,10 +38,13 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track My Ride | Car Higher</title>
 
-    <!-- Leaflet — NO API KEY -->
+    <!-- Leaflet â€” NO API KEY -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
@@ -64,7 +67,7 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
             position: absolute; inset: 0;
         }
 
-        /* Map tiles — readable streets and area labels */
+        /* Map tiles â€” readable streets and area labels */
         .leaflet-tile-pane { filter: none; }
 
         /* ===== TOP BAR ===== */
@@ -169,6 +172,7 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <div id="map"></div>
 
@@ -191,11 +195,11 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
             <img src="<?= $car_image ?>" class="vehicle-img" alt="Vehicle">
             <div class="vehicle-info">
                 <div class="vehicle-name"><?= htmlspecialchars($booking['make'] . ' ' . $booking['model']) ?></div>
-                <div class="vehicle-plate"><?= htmlspecialchars($booking['license_plate']) ?> • Booking #<?= $booking['booking_id'] ?></div>
+                <div class="vehicle-plate"><?= htmlspecialchars($booking['license_plate']) ?> â€¢ Booking #<?= $booking['booking_id'] ?></div>
                 <div class="stat-chips">
                     <div class="chip"><div class="dot green"></div> Live Signal</div>
-                    <div class="chip heading-chip"><i class="fas fa-compass"></i> <span id="hdg">—</span>°</div>
-                    <div class="chip" style="color:#f59e0b;"><i class="fas fa-map-marker-alt"></i> <span id="area-name">Locating…</span></div>
+                    <div class="chip heading-chip"><i class="fas fa-compass"></i> <span id="hdg">â€”</span>Â°</div>
+                    <div class="chip" style="color:#f59e0b;"><i class="fas fa-map-marker-alt"></i> <span id="area-name">Locatingâ€¦</span></div>
                 </div>
             </div>
         </div>
@@ -208,7 +212,7 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
                     <div class="route-val"><?= htmlspecialchars($booking['pickup_location'] ?? 'N/A') ?></div>
                 </div>
             </div>
-            <div style="color:rgba(255,255,255,0.2); font-size:1.2rem; margin-top:4px;">→</div>
+            <div style="color:rgba(255,255,255,0.2); font-size:1.2rem; margin-top:4px;">â†’</div>
             <div class="route-point">
                 <div class="route-icon" style="color: var(--primary);"><i class="fas fa-map-pin"></i></div>
                 <div>
@@ -231,9 +235,9 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
         attributionControl: false
     });
 
-    // Standard OpenStreetMap tiles — maximum detail
+    // Standard OpenStreetMap tiles â€” maximum detail
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19, attribution: '© OpenStreetMap'
+        maxZoom: 19, attribution: 'Â© OpenStreetMap'
     }).addTo(map);
 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -337,7 +341,7 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
         html: `<div style="background:${color};width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,.35);font-size:.75rem;">${emoji}</div>`,
         iconSize:[26,26], iconAnchor:[13,13]
     });
-    const POI_TYPES = { fuel:['#f59e0b','⛽'], hospital:['#ef4444','🏥'], police:['#3b82f6','🚓'], restaurant:['#10b981','🍽️'], school:['#8b5cf6','🏫'], parking:['#6366f1','🅿️'] };
+    const POI_TYPES = { fuel:['#f59e0b','â›½'], hospital:['#ef4444','ðŸ¥'], police:['#3b82f6','ðŸš“'], restaurant:['#10b981','ðŸ½ï¸'], school:['#8b5cf6','ðŸ«'], parking:['#6366f1','ðŸ…¿ï¸'] };
     let poiLayer = L.layerGroup().addTo(map), lastPOI = {};
 
     async function fetchPOIs(lat, lng) {
@@ -358,7 +362,7 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
         } catch(e) {}
     }
 
-    // Reverse geocoding (Nominatim — free, no key)
+    // Reverse geocoding (Nominatim â€” free, no key)
     let lastGeo = {};
     async function reverseGeocode(lat, lng) {
         if (lastGeo.lat && Math.abs(lat-lastGeo.lat)<0.002 && Math.abs(lng-lastGeo.lng)<0.002) return;
@@ -374,7 +378,7 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
             }
         } catch(e) {}
     }
-    // ── Poll GPS every 2s ────────────────────────────────────────────
+    // â”€â”€ Poll GPS every 2s â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     async function poll() {
         try {
             const r = await fetch(`../api/vehicle-gps.php?booking_id=${BOOKING_ID}`);
@@ -408,7 +412,7 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
 
                 // Reverse geocode for area name (throttled)
                 reverseGeocode(tgtLat, tgtLng);
-                // Load nearby POIs (throttled — only refreshes every ~500m)
+                // Load nearby POIs (throttled â€” only refreshes every ~500m)
                 fetchPOIs(tgtLat, tgtLng);
             }
         } catch(e) { console.warn(e); }
@@ -427,3 +431,4 @@ $car_image = !empty($booking['image_url']) ? '../' . $booking['image_url'] : 'ht
     </script>
 </body>
 </html>
+

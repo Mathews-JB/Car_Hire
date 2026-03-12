@@ -98,6 +98,9 @@ if ($vehicle['status'] !== 'available') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="public/css/style.css?v=2.3">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="public/css/theme.css?v=4.0">
+    <script src="public/js/theme-switcher.js?v=4.0"></script>
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
@@ -508,7 +511,10 @@ if ($vehicle['status'] !== 'available') {
                 <li><a href="our-fleet.php" class="active"><?php echo __('search_title'); ?></a></li>
                 <li><a href="index.php#about">Features</a></li>
             </ul>
-            <div class="auth-buttons" style="display: flex; gap: 10px; align-items: center;">
+            <div class="auth-buttons" style="display: flex; gap: 15px; align-items: center;">
+                <!-- Theme Switcher -->
+                <?php include_once 'includes/theme_switcher.php'; ?>
+
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="portal-customer/dashboard.php" class="btn btn-primary" style="padding: 0.6rem 1.2rem;"><?php echo __('profile'); ?></a>
                 <?php else: ?>
@@ -792,18 +798,17 @@ if ($vehicle['status'] !== 'available') {
                 </div>
 
                 <!-- Multi-Car Promo Below Booking Card -->
-                <div style="margin-top: 20px; background: rgba(37, 99, 235, 0.1); border: 1px dashed rgba(59, 130, 246, 0.3); border-radius: 16px; padding: 20px; text-align: center;">
-                    <i class="fas fa-car-side" style="color: #60a5fa; font-size: 1.5rem; margin-bottom: 10px; display: block;"></i>
+                <div style="margin-top: 20px; background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 20px; text-align: center;">
+                    <i class="fas fa-car-side" style="color: var(--accent-color); font-size: 1.5rem; margin-bottom: 10px; display: block;"></i>
                     <h4 style="color: white; font-size: 0.95rem; margin-bottom: 5px;">Planning an Event?</h4>
                     <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin-bottom: 15px; line-height: 1.4;">Need multiple vehicles for a wedding, corporate event, or group trip?</p>
-                    <a href="portal-customer/event-booking.php" style="display: inline-block; padding: 10px 20px; background: transparent; border: 1px solid #3b82f6; color: #60a5fa; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-decoration: none; transition: 0.3s;">Request a Fleet</a>
+                    <a href="portal-customer/event-booking.php" style="display: inline-block; padding: 10px 20px; background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color); border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-decoration: none; transition: 0.3s;">Request a Fleet</a>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <?php include_once 'includes/footer.php'; ?>
+
 
     <?php include_once 'includes/mobile_nav.php'; ?>
 

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -26,6 +26,9 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         body { background: #0f172a; overflow: hidden; }
         .agent-layout { height: 100vh; display: grid; grid-template-columns: 260px 1fr; }
@@ -38,7 +41,7 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
             left: 20px;
             z-index: 1000;
             width: 320px;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(30, 30, 35, 0.85);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
@@ -100,6 +103,7 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <div class="agent-layout">
         <?php include_once '../includes/agent_sidebar.php'; ?>
@@ -264,3 +268,4 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

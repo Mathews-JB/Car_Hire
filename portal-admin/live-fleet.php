@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../includes/db.php';
 
 // Fetch ALL bookings (not just confirmed) so admin always has something to select
@@ -26,12 +26,15 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Fleet Tracker | Car Higher Admin</title>
 
-    <!-- Leaflet CSS — NO API KEY NEEDED -->
+    <!-- Leaflet CSS â€” NO API KEY NEEDED -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,7 +46,7 @@ try {
             --danger: #ef4444;
             --dark: #0f172a;
             --darker: #060d1a;
-            --card: rgba(15, 23, 42, 0.88);
+            --card: rgba(30, 30, 35, 0.88);
             --border: rgba(255,255,255,0.10);
             --text-muted: rgba(255,255,255,0.5);
         }
@@ -63,7 +66,7 @@ try {
             z-index: 0;
         }
 
-        /* Map tiles — no filter so streets/labels are fully readable */
+        /* Map tiles â€” no filter so streets/labels are fully readable */
         .leaflet-tile-pane { filter: none; }
 
         /* ===== LEFT HUD ===== */
@@ -273,7 +276,7 @@ try {
             100% { transform: scale(2); opacity: 0; }
         }
 
-        /* ===== MOBILE: stacked layout — map on top, controls below ===== */
+        /* ===== MOBILE: stacked layout â€” map on top, controls below ===== */
         @media (max-width: 768px) {
             body { overflow: auto; height: auto; }
 
@@ -328,6 +331,7 @@ try {
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <!-- Loading Screen -->
     <div id="loader">
@@ -370,15 +374,15 @@ try {
                 </div>
                 <div class="tele-item">
                     <span class="tele-label">Heading</span>
-                    <span class="tele-val" id="hud-bearing">—<span class="unit">°</span></span>
+                    <span class="tele-val" id="hud-bearing">â€”<span class="unit">Â°</span></span>
                 </div>
                 <div class="tele-item tele-full">
                     <span class="tele-label">GPS Coordinates</span>
-                    <span class="tele-val" style="font-size:0.85rem; color: var(--primary);" id="hud-coords">—</span>
+                    <span class="tele-val" style="font-size:0.85rem; color: var(--primary);" id="hud-coords">â€”</span>
                 </div>
                 <div class="tele-item tele-full">
                     <span class="tele-label">Current Area</span>
-                    <span class="tele-val" style="font-size:0.82rem; color:#f59e0b;" id="hud-location">Locating…</span>
+                    <span class="tele-val" style="font-size:0.82rem; color:#f59e0b;" id="hud-location">Locatingâ€¦</span>
                 </div>
             </div>
 
@@ -414,7 +418,7 @@ try {
                 <div class="fleet-dot <?= ($b['last_lat'] ? 'online' : 'offline') ?>"></div>
                 <div>
                     <div class="fleet-make"><?= htmlspecialchars($b['make'] . ' ' . $b['model']) ?></div>
-                    <div class="fleet-plate"><?= htmlspecialchars($b['license_plate']) ?> • <?= htmlspecialchars($b['customer']) ?></div>
+                    <div class="fleet-plate"><?= htmlspecialchars($b['license_plate']) ?> â€¢ <?= htmlspecialchars($b['customer']) ?></div>
                 </div>
             </div>
             <?php endforeach; ?>
@@ -431,13 +435,13 @@ try {
     <!-- Bottom Controls -->
     <div class="bottom-bar">
         <select class="ctrl-btn" id="booking-selector">
-            <option value="">— Select Active Booking —</option>
+            <option value="">â€” Select Active Booking â€”</option>
             <?php foreach ($active_bookings as $b): ?>
             <option value="<?= $b['booking_id'] ?>"
                     data-name="<?= htmlspecialchars($b['make'] . ' ' . $b['model']) ?>"
                     data-plate="<?= htmlspecialchars($b['license_plate']) ?>"
                     data-customer="<?= htmlspecialchars($b['customer']) ?>">
-                [<?= strtoupper($b['status']) ?>] <?= htmlspecialchars($b['license_plate']) ?> — <?= htmlspecialchars($b['make'] . ' ' . $b['model']) ?> (<?= htmlspecialchars($b['customer']) ?>)
+                [<?= strtoupper($b['status']) ?>] <?= htmlspecialchars($b['license_plate']) ?> â€” <?= htmlspecialchars($b['make'] . ' ' . $b['model']) ?> (<?= htmlspecialchars($b['customer']) ?>)
             </option>
             <?php endforeach; ?>
             <?php if (empty($active_bookings)): ?>
@@ -448,7 +452,7 @@ try {
         <a href="dashboard.php" class="ctrl-btn"><i class="fas fa-arrow-left"></i> Dashboard</a>
     </div>
 
-    <!-- Leaflet JS — NO API KEY NEEDED -->
+    <!-- Leaflet JS â€” NO API KEY NEEDED -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
@@ -462,20 +466,20 @@ try {
         attributionControl: true
     });
 
-    // Standard OpenStreetMap tiles — shows maximum detail, small businesses, and all street names at high zoom levels.
+    // Standard OpenStreetMap tiles â€” shows maximum detail, small businesses, and all street names at high zoom levels.
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19
     }).addTo(map);
 
-    // ── Nearby Landmarks (Overpass API — free, no key) ──────────────
+    // â”€â”€ Nearby Landmarks (Overpass API â€” free, no key) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const poiIcon = (color, icon) => L.divIcon({
         className: '',
         html: `<div style="background:${color};width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,.35);font-size:.8rem;">${icon}</div>`,
         iconSize: [28, 28], iconAnchor: [14, 14]
     });
 
-    const poiColors = { fuel: ['#f59e0b','⛽'], hospital: ['#ef4444','🏥'], police: ['#3b82f6','🚓'], restaurant: ['#10b981','🍽️'], school: ['#8b5cf6','🏫'], parking: ['#6366f1','🅿️'] };
+    const poiColors = { fuel: ['#f59e0b','â›½'], hospital: ['#ef4444','ðŸ¥'], police: ['#3b82f6','ðŸš“'], restaurant: ['#10b981','ðŸ½ï¸'], school: ['#8b5cf6','ðŸ«'], parking: ['#6366f1','ðŸ…¿ï¸'] };
     let poiLayerGroup = L.layerGroup().addTo(map);
     let lastPoiFetch = { lat: null, lng: null };
 
@@ -511,7 +515,7 @@ try {
         } catch(e) { /* Overpass temporarily unavailable */ }
     }
 
-    // ── Reverse Geocoding (Nominatim — free, no key) ──────────────────
+    // â”€â”€ Reverse Geocoding (Nominatim â€” free, no key) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     let lastGeocodeLat = null, lastGeocodeLng = null;
     async function reverseGeocode(lat, lng) {
         if (lastGeocodeLat && Math.abs(lat - lastGeocodeLat) < 0.002 && Math.abs(lng - lastGeocodeLng) < 0.002) return;
@@ -524,7 +528,7 @@ try {
             if (d && d.address) {
                 const area = d.address.road || d.address.suburb || d.address.county || '';
                 const city = d.address.city || d.address.town || d.address.village || '';
-                document.getElementById('hud-location').textContent = [area, city].filter(Boolean).join(', ') || 'Locating…';
+                document.getElementById('hud-location').textContent = [area, city].filter(Boolean).join(', ') || 'Locatingâ€¦';
             }
         } catch(e) {}
     }
@@ -766,7 +770,7 @@ try {
 
                 // Update HUD
                 document.getElementById('hud-speed').innerHTML   = `${Math.round(v.speed)}<span class="unit">km/h</span>`;
-                document.getElementById('hud-bearing').innerHTML = `${Math.round(v.bearing)}<span class="unit">°</span>`;
+                document.getElementById('hud-bearing').innerHTML = `${Math.round(v.bearing)}<span class="unit">Â°</span>`;
                 document.getElementById('hud-coords').textContent = `${parseFloat(v.lat).toFixed(5)}, ${parseFloat(v.lng).toFixed(5)}`;
 
                 // Journey progress
@@ -812,3 +816,4 @@ try {
     </script>
 </body>
 </html>
+

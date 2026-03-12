@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -84,6 +84,9 @@ $pending_users = $stmt->fetchAll();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .review-card { 
             background: rgba(30, 41, 59, 0.4) !important; 
@@ -113,7 +116,7 @@ $pending_users = $stmt->fetchAll();
         .info-label { color: rgba(255, 255, 255, 0.5); font-size: 0.8rem; }
         
         textarea { 
-            background: rgba(15, 23, 42, 0.4) !important; 
+            background: rgba(30, 30, 35, 0.4) !important; 
             border: 1px solid rgba(255, 255, 255, 0.1) !important; 
             color: white !important; 
             border-radius: 12px; 
@@ -134,6 +137,7 @@ $pending_users = $stmt->fetchAll();
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
         
@@ -144,6 +148,7 @@ $pending_users = $stmt->fetchAll();
                     <p class="text-secondary">Review and approve customer identity documents for compliance.</p>
                 </div>
                 <div class="header-actions">
+                    <?php include_once '../includes/theme_switcher.php'; ?>
                     <button class="btn btn-outline" onclick="window.location.reload()"><i class="fas fa-sync"></i> Refresh Queue</button>
                     <a href="users.php" class="btn btn-primary"><i class="fas fa-users"></i> User Directory</a>
                 </div>
@@ -297,3 +302,4 @@ $pending_users = $stmt->fetchAll();
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

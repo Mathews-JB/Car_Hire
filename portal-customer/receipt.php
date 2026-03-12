@@ -54,6 +54,9 @@ $company_tpin = $settings['company_tpin'] ?? '1001234567';
     <title>Receipt #<?php echo str_pad($b['id'], 6, '0', STR_PAD_LEFT); ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         :root {
             --primary: #1e293b;

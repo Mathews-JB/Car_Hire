@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../includes/db.php';
 
 // Fetch a confirmed booking to simulate
@@ -18,8 +18,11 @@ $vehicle_id = $booking ? $booking['booking_id'] : 1;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Driver 🚗</title>
+    <title>Demo Driver ðŸš—</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         body {
             font-family: 'Outfit', sans-serif;
@@ -65,12 +68,13 @@ $vehicle_id = $booking ? $booking['booking_id'] : 1;
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <div class="card">
         <h1>Demo Tracker</h1>
         <p>I am pretending to be the car driving around Lusaka.</p>
         
-        <div class="car-anim">🚗</div>
+        <div class="car-anim">ðŸš—</div>
         
         <?php if ($booking): ?>
             <h3>Driving: <?= htmlspecialchars($booking['make'] . ' ' . $booking['model']) ?></h3>
@@ -108,3 +112,4 @@ $vehicle_id = $booking ? $booking['booking_id'] : 1;
 
 </body>
 </html>
+

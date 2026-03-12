@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -64,6 +64,9 @@ $base_daily = ($booking['total_price'] - array_sum(array_column($addons, 'price'
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice #<?php echo $booking['id']; ?> | Car Hire</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         body { font-family: 'Inter', sans-serif; color: #1e293b; background: #525659; margin: 0; padding: 40px 0; min-height: 100vh; }
         .invoice-container { max-width: 800px; margin: 0 auto; background: white; padding: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
@@ -151,6 +154,7 @@ $base_daily = ($booking['total_price'] - array_sum(array_column($addons, 'price'
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <div class="no-print" style="text-align: center; margin-bottom: 20px;">
         <button onclick="window.print()" style="padding: 12px 24px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Download / Print PDF</button>
@@ -238,3 +242,4 @@ $base_daily = ($booking['total_price'] - array_sum(array_column($addons, 'price'
     </script>
 </body>
 </html>
+

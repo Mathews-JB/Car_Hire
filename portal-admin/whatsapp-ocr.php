@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -16,7 +16,7 @@ $error   = '';
 $wa_status = [];
 // Last Updated: ' . date('Y-m-d H:i:s');
 
-// ── Check WhatsApp configuration status ──────────────────────────────────────
+// â”€â”€ Check WhatsApp configuration status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 $wa_configured  = !empty(app_config('TWILIO_ACCOUNT_SID')) && !empty(app_config('TWILIO_AUTH_TOKEN'));
 $wa_simulate    = app_config('WHATSAPP_SIMULATE', 'true') !== 'false';
 $sms_configured = !empty(app_config('TWILIO_SMS_FROM'));
@@ -27,7 +27,7 @@ $tesseract_path = app_config('TESSERACT_PATH', 'tesseract');
 exec(escapeshellarg($tesseract_path) . " --version 2>&1", $tess_out, $tess_ret);
 if ($tess_ret === 0) $ocr_tesseract = true;
 
-// ── Handle manual send ───────────────────────────────────────────────
+// â”€â”€ Handle manual send â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     verify_csrf_token($_POST['csrf_token'] ?? '');
     $wa = new WhatsAppService();
@@ -40,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         } else {
             $result = $wa->send($phone, $message);
             if ($result['success']) {
-                $success = "✅ WhatsApp message sent! SID: " . ($result['sid'] ?? 'N/A');
+                $success = "âœ… WhatsApp message sent! SID: " . ($result['sid'] ?? 'N/A');
             } else {
-                $error = "❌ Failed: " . ($result['error'] ?? 'Unknown error');
+                $error = "âŒ Failed: " . ($result['error'] ?? 'Unknown error');
             }
         }
     }
@@ -55,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         } else {
             $result = send_sms($phone, $message);
             if ($result) {
-                $success = "✅ SMS sent successfully!";
+                $success = "âœ… SMS sent successfully!";
             } else {
-                $error = "❌ Failed to send SMS. Check your Twilio SMS settings.";
+                $error = "âŒ Failed to send SMS. Check your Twilio SMS settings.";
             }
         }
     }
@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     'total_price'     => $booking['total_price'],
                 ]);
                 $success = $result['success']
-                    ? "✅ Payment reminder sent to {$booking['name']} ({$booking['phone']})"
-                    : "❌ Failed: " . ($result['error'] ?? 'Unknown');
+                    ? "âœ… Payment reminder sent to {$booking['name']} ({$booking['phone']})"
+                    : "âŒ Failed: " . ($result['error'] ?? 'Unknown');
             } else {
                 $error = 'Booking not found or customer has no phone number.';
             }
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 }
 
-// ── Fetch recent pending bookings for reminder panel ─────────────────────────
+// â”€â”€ Fetch recent pending bookings for reminder panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 $pending_bookings = $pdo->query("
     SELECT b.id, b.total_price, b.pickup_date, b.created_at, b.reminder_sent_at,
            u.name AS customer_name, u.phone,
@@ -108,7 +108,7 @@ $pending_bookings = $pdo->query("
     LIMIT 20
 ")->fetchAll();
 
-// ── Fetch WhatsApp log (last 30 lines) ───────────────────────────────────────
+// â”€â”€ Fetch WhatsApp log (last 30 lines) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 $wa_log_file = __DIR__ . '/../logs/whatsapp.log';
 $wa_log_lines = [];
 if (file_exists($wa_log_file)) {
@@ -125,6 +125,9 @@ if (file_exists($wa_log_file)) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         :root {
             --wa-green: #25D366;
@@ -427,6 +430,7 @@ if (file_exists($wa_log_file)) {
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
     <?php include_once '../includes/admin_sidebar.php'; ?>
 
@@ -445,7 +449,7 @@ if (file_exists($wa_log_file)) {
             <div class="alert alert-error"><i class="fas fa-exclamation-circle" style="margin-right:8px;"></i><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
 
-        <!-- ── Status Overview ─────────────────────────────────────────────── -->
+        <!-- â”€â”€ Status Overview â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <div class="status-grid">
             <div class="status-card">
                 <div class="status-icon <?php echo $wa_configured ? 'green' : 'red'; ?>">
@@ -487,7 +491,7 @@ if (file_exists($wa_log_file)) {
 
         <div class="grid-2" style="gap: 25px;">
 
-            <!-- ── Test WhatsApp Send ──────────────────────────────────────── -->
+            <!-- â”€â”€ Test WhatsApp Send â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
             <div class="panel">
                 <div class="panel-title">
                     <i class="fab fa-whatsapp"></i> Send Test Message
@@ -501,20 +505,20 @@ if (file_exists($wa_log_file)) {
                     </div>
                     <div class="form-group" style="margin-bottom:20px;">
                         <label>Message</label>
-                        <textarea name="test_message" placeholder="Type your test message here...">Hello from Car Hire! 🚗 This is a test message from our WhatsApp Business integration.</textarea>
+                        <textarea name="test_message" placeholder="Type your test message here...">Hello from Car Hire! ðŸš— This is a test message from our WhatsApp Business integration.</textarea>
                     </div>
                     <button type="submit" class="btn-wa">
                         <i class="fab fa-whatsapp"></i> Send WhatsApp
                     </button>
                     <?php if ($wa_simulate): ?>
                         <p style="font-size:0.78rem; color:rgba(255,255,255,0.4); margin-top:10px;">
-                            <i class="fas fa-flask" style="color:#fbbf24;"></i> Simulation mode — messages are logged.
+                            <i class="fas fa-flask" style="color:#fbbf24;"></i> Simulation mode â€” messages are logged.
                         </p>
                     <?php endif; ?>
                 </form>
             </div>
 
-            <!-- ── Test Direct SMS Send ─────────────────────────────────────── -->
+            <!-- â”€â”€ Test Direct SMS Send â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
             <div class="panel">
                 <div class="panel-title">
                     <i class="fas fa-sms"></i> Send Direct SMS
@@ -528,19 +532,19 @@ if (file_exists($wa_log_file)) {
                     </div>
                     <div class="form-group" style="margin-bottom:20px;">
                         <label>Message</label>
-                        <textarea name="test_message_sms" placeholder="Type your SMS here...">Car Hire: Your vehicle is ready for pickup! 🚗</textarea>
+                        <textarea name="test_message_sms" placeholder="Type your SMS here...">Car Hire: Your vehicle is ready for pickup! ðŸš—</textarea>
                     </div>
                     <button type="submit" class="btn-wa" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
                         <i class="fas fa-paper-plane"></i> Send Direct SMS
                     </button>
                     <?php if ($sms_simulate): ?>
                         <p style="font-size:0.78rem; color:rgba(255,255,255,0.4); margin-top:10px;">
-                            <i class="fas fa-flask" style="color:#fbbf24;"></i> Simulation mode — SMS logged in <code>logs/sms.log</code>.
+                            <i class="fas fa-flask" style="color:#fbbf24;"></i> Simulation mode â€” SMS logged in <code>logs/sms.log</code>.
                         </p>
                     <?php endif; ?>
                 </form>
             </div>
-            <!-- ── WhatsApp Chatbot Info ───────────────────────────────────── -->
+            <!-- â”€â”€ WhatsApp Chatbot Info â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
             <div class="panel">
                 <div class="panel-title">
                     <i class="fas fa-robot"></i> Chatbot Keywords
@@ -575,7 +579,7 @@ if (file_exists($wa_log_file)) {
                 </div>
             </div>
 
-            <!-- ── OCR Test Tool ────────────────────────────────────────────── -->
+            <!-- â”€â”€ OCR Test Tool â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
             <div class="panel">
                 <div class="panel-title">
                     <i class="fas fa-search" style="color:var(--ocr-purple);"></i> Live OCR Tester
@@ -654,10 +658,10 @@ if (file_exists($wa_log_file)) {
         });
         </script>
 
-        <!-- ── Pending Bookings – Send Reminders ─────────────────────────── -->
+        <!-- â”€â”€ Pending Bookings â€“ Send Reminders â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <div class="panel">
             <div class="panel-title">
-                <i class="fas fa-bell"></i> Pending Bookings – Send Payment Reminders
+                <i class="fas fa-bell"></i> Pending Bookings â€“ Send Payment Reminders
                 <span class="badge badge-yellow" style="margin-left:auto;"><?php echo count($pending_bookings); ?> pending</span>
             </div>
             <?php if (empty($pending_bookings)): ?>
@@ -735,10 +739,10 @@ if (file_exists($wa_log_file)) {
             <?php endif; ?>
         </div>
 
-        <!-- ── OCR Setup Guide ────────────────────────────────────────────── -->
+        <!-- â”€â”€ OCR Setup Guide â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <div class="panel">
             <div class="panel-title" style="color:white;">
-                <i class="fas fa-magic" style="color:#a78bfa;"></i> OCR Document Verification – Setup Guide
+                <i class="fas fa-magic" style="color:#a78bfa;"></i> OCR Document Verification â€“ Setup Guide
             </div>
             <p style="font-size:0.85rem; color:rgba(255,255,255,0.5); margin-bottom:22px;">
                 The OCR system automatically extracts NRC and Driver's License numbers from uploaded document photos. Choose one of the two options below:
@@ -753,7 +757,7 @@ if (file_exists($wa_log_file)) {
                         </div>
                         <div>
                             <div style="font-weight:700; color:white; font-size:0.95rem;">Google Cloud Vision</div>
-                            <div style="font-size:0.75rem; color:rgba(255,255,255,0.4);">Recommended · High accuracy</div>
+                            <div style="font-size:0.75rem; color:rgba(255,255,255,0.4);">Recommended Â· High accuracy</div>
                         </div>
                         <?php 
                         $key_preview = app_config('GOOGLE_VISION_API_KEY');
@@ -761,7 +765,7 @@ if (file_exists($wa_log_file)) {
                         $masked_key = $is_configured ? substr($key_preview, 0, 8) . '...' . substr($key_preview, -4) : 'Not set';
                         ?>
                         <span class="badge <?php echo $is_configured ? 'badge-green' : 'badge-red'; ?>" style="margin-left:auto;" title="<?php echo $is_configured ? 'Key: ' . $masked_key : 'Key not found in .env'; ?>">
-                            <?php echo $is_configured ? '✓ Active (' . $masked_key . ')' : '✗ Not set'; ?>
+                            <?php echo $is_configured ? 'âœ“ Active (' . $masked_key . ')' : 'âœ— Not set'; ?>
                         </span>
                         <?php if (!$ocr_google): ?>
                         <!-- DEBUG: 
@@ -789,7 +793,7 @@ if (file_exists($wa_log_file)) {
                         <div class="step-num">3</div>
                         <div class="step-content">
                             <h4>Create API Key</h4>
-                            <p>Go to APIs &amp; Services → Credentials → Create API Key. Restrict it to Vision API only.</p>
+                            <p>Go to APIs &amp; Services â†’ Credentials â†’ Create API Key. Restrict it to Vision API only.</p>
                         </div>
                     </div>
                     <div class="setup-step">
@@ -809,10 +813,10 @@ if (file_exists($wa_log_file)) {
                         </div>
                         <div>
                             <div style="font-weight:700; color:white; font-size:0.95rem;">Tesseract OCR</div>
-                            <div style="font-size:0.75rem; color:rgba(255,255,255,0.4);">Free · Works offline</div>
+                            <div style="font-size:0.75rem; color:rgba(255,255,255,0.4);">Free Â· Works offline</div>
                         </div>
                         <span class="badge <?php echo $ocr_tesseract ? 'badge-green' : 'badge-yellow'; ?>" style="margin-left:auto;">
-                            <?php echo $ocr_tesseract ? '✓ Installed' : '⚠ Not found'; ?>
+                            <?php echo $ocr_tesseract ? 'âœ“ Installed' : 'âš  Not found'; ?>
                         </span>
                     </div>
                     <div class="setup-step">
@@ -840,21 +844,21 @@ if (file_exists($wa_log_file)) {
                         <div class="step-num">4</div>
                         <div class="step-content">
                             <h4>Verify Installation</h4>
-                            <p>Run: <code>tesseract --version</code> in terminal. Status above shows: <strong style="color:<?php echo $ocr_tesseract ? '#25D366' : '#fbbf24'; ?>"><?php echo $ocr_tesseract ? 'Installed ✓' : 'Not found'; ?></strong></p>
+                            <p>Run: <code>tesseract --version</code> in terminal. Status above shows: <strong style="color:<?php echo $ocr_tesseract ? '#25D366' : '#fbbf24'; ?>"><?php echo $ocr_tesseract ? 'Installed âœ“' : 'Not found'; ?></strong></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ── WhatsApp Setup Guide ───────────────────────────────────────── -->
+        <!-- â”€â”€ WhatsApp Setup Guide â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <div class="panel">
             <div class="panel-title">
                 <i class="fab fa-whatsapp"></i> WhatsApp Business Setup Guide
             </div>
             <div class="grid-2" style="gap:25px;">
                 <div>
-                    <h4 style="color:white; font-size:0.9rem; margin-bottom:14px;">Quick Start (Sandbox – Free)</h4>
+                    <h4 style="color:white; font-size:0.9rem; margin-bottom:14px;">Quick Start (Sandbox â€“ Free)</h4>
                     <div class="setup-step">
                         <div class="step-num" style="background:linear-gradient(135deg,#25D366,#128C7E);">1</div>
                         <div class="step-content">
@@ -866,14 +870,14 @@ if (file_exists($wa_log_file)) {
                         <div class="step-num" style="background:linear-gradient(135deg,#25D366,#128C7E);">2</div>
                         <div class="step-content">
                             <h4>Enable WhatsApp Sandbox</h4>
-                            <p>Console → Messaging → Try it out → Send a WhatsApp message. Join sandbox by texting <code>join [word]</code> to <code>+1 415 523 8886</code>.</p>
+                            <p>Console â†’ Messaging â†’ Try it out â†’ Send a WhatsApp message. Join sandbox by texting <code>join [word]</code> to <code>+1 415 523 8886</code>.</p>
                         </div>
                     </div>
                     <div class="setup-step">
                         <div class="step-num" style="background:linear-gradient(135deg,#25D366,#128C7E);">3</div>
                         <div class="step-content">
                             <h4>Get Credentials</h4>
-                            <p>Console → Account Info → Copy <code>Account SID</code> and <code>Auth Token</code>.</p>
+                            <p>Console â†’ Account Info â†’ Copy <code>Account SID</code> and <code>Auth Token</code>.</p>
                         </div>
                     </div>
                     <div class="setup-step">
@@ -895,17 +899,17 @@ if (file_exists($wa_log_file)) {
                             <li>Update <code>TWILIO_WHATSAPP_FROM</code></li>
                             <li>Set up webhook URL pointing to your server</li>
                         </ol>
-                        <p style="margin:12px 0 0; color:rgba(255,255,255,0.4);">Approval takes 2–5 business days. Sandbox works immediately for testing.</p>
+                        <p style="margin:12px 0 0; color:rgba(255,255,255,0.4);">Approval takes 2â€“5 business days. Sandbox works immediately for testing.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ── WhatsApp Log ───────────────────────────────────────────────── -->
+        <!-- â”€â”€ WhatsApp Log â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <div class="panel">
             <div class="panel-title">
                 <i class="fas fa-terminal"></i> WhatsApp Activity Log
-                <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); margin-left:auto; font-weight:400;">Last 30 entries · <?php echo basename($wa_log_file); ?></span>
+                <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); margin-left:auto; font-weight:400;">Last 30 entries Â· <?php echo basename($wa_log_file); ?></span>
             </div>
             <div class="log-box">
                 <?php if (empty($wa_log_lines)): ?>
@@ -915,7 +919,7 @@ if (file_exists($wa_log_file)) {
                         <?php
                         $class = 'log-default';
                         if (str_contains($line, 'SIMULATE')) $class = 'log-sim';
-                        elseif (str_contains($line, 'SENT') || str_contains($line, '✓')) $class = 'log-sent';
+                        elseif (str_contains($line, 'SENT') || str_contains($line, 'âœ“')) $class = 'log-sent';
                         elseif (str_contains($line, 'FAIL') || str_contains($line, 'ERROR')) $class = 'log-fail';
                         ?>
                         <div class="<?php echo $class; ?>"><?php echo htmlspecialchars($line); ?></div>
@@ -929,3 +933,4 @@ if (file_exists($wa_log_file)) {
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

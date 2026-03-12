@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -23,10 +23,13 @@ $stmt = $pdo->query("
 ");
 $roi_data = $stmt->fetchAll();
 
+// Fetch System-wide expenses (Salaries, Rent, etc.)
+$total_system_expenses = $pdo->query("SELECT SUM(amount) FROM system_expenses")->fetchColumn() ?: 0;
+
 // Global Stats
 $total_fleet_revenue = array_sum(array_column($roi_data, 'total_revenue'));
 $total_fleet_maintenance = array_sum(array_column($roi_data, 'total_maintenance'));
-$net_profit = $total_fleet_revenue - $total_fleet_maintenance;
+$net_profit = $total_fleet_revenue - $total_fleet_maintenance - $total_system_expenses;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,6 +40,9 @@ $net_profit = $total_fleet_revenue - $total_fleet_maintenance;
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .summary-card { padding: 25px; display: flex; flex-direction: column; justify-content: center; }
         .summary-card h4 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin: 0 0 10px; font-weight: 800; }
@@ -131,6 +137,7 @@ $net_profit = $total_fleet_revenue - $total_fleet_maintenance;
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
 
@@ -141,29 +148,35 @@ $net_profit = $total_fleet_revenue - $total_fleet_maintenance;
                     <p class="text-secondary">Track revenue, maintenance costs, and vehicle ROI.</p>
                 </div>
                 <div class="header-actions">
+                    <?php include_once '../includes/theme_switcher.php'; ?>
                     <button class="btn btn-outline" style="border-color: rgba(255,255,255,0.1);"><i class="fas fa-file-export"></i> Download Report</button>
                     <a href="analytics.php" class="btn btn-primary"><i class="fas fa-chart-pie"></i> Visual Analytics</a>
                 </div>
             </div>
 
             <!-- Top Level Stats -->
-            <div class="grid-3" style="margin-bottom: 30px;">
+            <div class="grid-4" style="margin-bottom: 30px;">
                 <div class="data-card summary-card" style="border-top: 3px solid #60a5fa;">
                     <h4>Fleet Revenue</h4>
                     <p class="summary-value">ZMW <?php echo number_format($total_fleet_revenue, 0); ?></p>
                     <small>Completed Bookings</small>
                 </div>
                 <div class="data-card summary-card" style="border-top: 3px solid #f59e0b;">
-                    <h4>Operating Cost</h4>
+                    <h4>Maintenance</h4>
                     <p class="summary-value">ZMW <?php echo number_format($total_fleet_maintenance, 0); ?></p>
-                    <small>Maintenance & Repairs</small>
+                    <small>Vehicle Repairs & Logs</small>
+                </div>
+                <div class="data-card summary-card" style="border-top: 3px solid #ec4899;">
+                    <h4>Fixed Expenses</h4>
+                    <p class="summary-value">ZMW <?php echo number_format($total_system_expenses, 0); ?></p>
+                    <small>Rent, Salaries, Taxes</small>
                 </div>
                 <div class="data-card summary-card" style="border-top: 3px solid <?php echo $net_profit >= 0 ? '#10b981' : '#ef4444'; ?>;">
                     <h4>Net Profit</h4>
                     <p class="summary-value" style="color:<?php echo $net_profit >= 0 ? '#10b981' : '#ef4444'; ?>;">
                         ZMW <?php echo number_format($net_profit, 0); ?>
                     </p>
-                    <small>Return on Fleet Investment</small>
+                    <small>Real Return on Equity</small>
                 </div>
             </div>
 
@@ -237,3 +250,4 @@ $net_profit = $total_fleet_revenue - $total_fleet_maintenance;
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

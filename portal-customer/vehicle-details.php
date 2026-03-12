@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Aggressive Cache Busting
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -55,6 +55,9 @@ if (empty($vehicle_images)) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .details-grid {
             display: grid;
@@ -152,7 +155,7 @@ if (empty($vehicle_images)) {
         /* Video Showcase Styles */
         .video-tour-container {
             margin-top: 25px;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(30, 30, 35, 0.6);
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.05);
@@ -241,7 +244,7 @@ if (empty($vehicle_images)) {
         .video-control-btn {
             width: 40px;
             height: 40px;
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(30, 30, 35, 0.7);
             backdrop-filter: blur(5px);
             border-radius: 50%;
             display: flex;
@@ -360,6 +363,7 @@ if (empty($vehicle_images)) {
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <nav class="hub-bar">
         <a href="dashboard.php" class="logo">Car Hire</a>
@@ -600,7 +604,7 @@ if (empty($vehicle_images)) {
                                     <span id="estimatedPrice" style="color: white; font-weight: 800; font-size: 1.2rem;">ZMW 0.00</span>
                                 </div>
                                 <div style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-top: 5px;">
-                                    <span id="daysCount">0</span> days × ZMW <?php echo number_format($vehicle['price_per_day'], 2); ?>/day
+                                    <span id="daysCount">0</span> days Ã— ZMW <?php echo number_format($vehicle['price_per_day'], 2); ?>/day
                                 </div>
                             </div>
                         </form>
@@ -740,3 +744,4 @@ if (empty($vehicle_images)) {
     </script>
 </body>
 </html>
+

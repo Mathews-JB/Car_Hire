@@ -1,4 +1,4 @@
-
+﻿
 <?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
@@ -50,6 +50,9 @@ $notifications = $pdo->query("SELECT * FROM notifications ORDER BY created_at DE
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .compose-card {
             padding: 30px;
@@ -93,6 +96,7 @@ $notifications = $pdo->query("SELECT * FROM notifications ORDER BY created_at DE
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
         
@@ -184,3 +188,4 @@ $notifications = $pdo->query("SELECT * FROM notifications ORDER BY created_at DE
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

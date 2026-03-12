@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_voucher'])) {
         try {
             $stmt = $pdo->prepare("INSERT INTO vouchers (code, discount_type, discount_value, expiry_date, min_booking_amount, usage_limit, assigned_user_email) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([$code, $type, $value, $expiry, $min_amount, $limit, $assigned_email]);
+            log_action($pdo, "Created voucher", "Code: $code, Value: $value ($type)", "Marketing");
             $_SESSION['flash_success'] = "Voucher code '$code' created successfully.";
         } catch (PDOException $e) {
             $_SESSION['flash_error'] = "Error: Voucher code likely already exists.";
@@ -53,6 +54,7 @@ if (isset($_GET['delete_id'])) {
     $id = (int)$_GET['delete_id'];
     $stmt = $pdo->prepare("DELETE FROM vouchers WHERE id = ?");
     $stmt->execute([$id]);
+    log_action($pdo, "Deleted voucher", "Voucher ID: $id", "Marketing");
     $_SESSION['flash_success'] = "Voucher deleted permanently.";
     header("Location: vouchers.php");
     exit;
@@ -72,6 +74,9 @@ $vouchers = $stmt->fetchAll();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .voucher-code { font-family: monospace; font-weight: 800; letter-spacing: 2px; color: var(--accent-color); }
         .progress-track { height: 4px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; margin-top: 6px; }
@@ -79,6 +84,7 @@ $vouchers = $stmt->fetchAll();
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
 
@@ -107,6 +113,7 @@ $vouchers = $stmt->fetchAll();
                     <p class="text-secondary">Manage marketing campaigns and discount codes.</p>
                 </div>
                 <div class="header-actions">
+                    <?php include_once '../includes/theme_switcher.php'; ?>
                     <button class="btn btn-primary" onclick="toggleModal('voucherModal')">
                         <i class="fas fa-plus"></i> Create Voucher
                     </button>
@@ -300,3 +307,4 @@ $vouchers = $stmt->fetchAll();
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

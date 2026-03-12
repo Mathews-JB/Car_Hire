@@ -92,52 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="public/css/theme.css?v=4.0">
+    <script src="public/js/theme-switcher.js?v=4.0"></script>
     <style>
-        .auth-container {
-            max-width: 450px;
-            margin: 100px auto;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-        }
-        .auth-title {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .form-feedback {
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-        .error { background: #f8d7da; color: #721c24; }
-        .input-wrapper {
-            position: relative;
-        }
-        .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: rgba(255,255,255,0.5);
-            transition: color 0.3s;
-            z-index: 10;
-        }
-        .toggle-password:hover {
-            color: white;
-        }
-        @media (min-width: 769px) {
-            body { 
-                background: url('public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
-            }
-        }
-        @media (max-width: 768px) {
-            body {
-                background: url('public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
-            }
-        }
+        html, body { 
+            overflow: hidden !important;
+            height: 100% !important;
         }
         
         /* Loading Spinner */
@@ -161,15 +122,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        .input-wrapper { position: relative; }
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: rgba(255,255,255,0.4);
+            transition: color 0.3s;
+            z-index: 10;
+        }
+        .toggle-password:hover { color: white; }
     </style>
 </head>
-<body>
-
+<body class="stabilized-car-bg">
     <?php include_once 'includes/mobile_header.php'; ?>
-
     <div class="auth-bg">
-        <!-- Floating Lang Switcher for Login -->
-        <div class="auth-lang-wrapper" style="position: fixed; z-index: 1000; top: 15px; right: 15px;">
+        <!-- Floating Theme & Lang Switcher for Login -->
+        <div class="auth-lang-wrapper" style="position: fixed; z-index: 1000; top: 15px; right: 15px; display: flex; gap: 10px; align-items: center;">
+            <!-- Theme Switcher -->
+            <?php include 'includes/theme_switcher.php'; ?>
+
             <div class="lang-switcher" style="position: relative;">
                 <button class="btn btn-outline" style="border: 1px solid rgba(255,255,255,0.2); background: rgba(30,30,35,0.4); backdrop-filter: blur(10px); color: white; padding: 8px 15px; font-size: 0.8rem; border-radius: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="toggleLang()">
                     <i class="fas fa-globe"></i> <span><?php echo strtoupper($current_lang); ?></span> <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
@@ -237,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
             
             <p style="text-align: center; margin-top: 35px; font-size: 0.9rem; color: rgba(255,255,255,0.5);">
-                Need an account? <a href="register.php" style="color: var(--white); font-weight: 700; border-bottom: 1px solid var(--accent-color);">Register here</a>
+                Need an account? <a href="register.php<?php echo isset($_GET['return_url']) ? '?return_url='.urlencode($_GET['return_url']) : ''; ?>" style="color: var(--white); font-weight: 700; border-bottom: 1px solid var(--accent-color);">Register here</a>
             </p>
         </div>
     </div>

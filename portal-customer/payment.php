@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -46,6 +46,9 @@ if (isset($_GET['error'])) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         :root {
             --payment-bg: rgba(45, 45, 45, 0.65);
@@ -56,7 +59,7 @@ if (isset($_GET['error'])) {
         }
 
         html, body { 
-            background: #080c17 !important; 
+            background: #121212 !important; 
             color: #f8fafc !important; 
             overflow: hidden !important;
             height: 100% !important;
@@ -70,18 +73,18 @@ if (isset($_GET['error'])) {
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             padding-top: 80px;
-            padding-bottom: 110px;
+            padding-bottom: 40px;
             overscroll-behavior: none;
         }
 
         .payment-card {
-            max-width: 500px;
-            margin: 40px auto;
+            max-width: 440px;
+            margin: 30px auto;
             background: var(--payment-bg);
             backdrop-filter: blur(30px) saturate(180%);
             -webkit-backdrop-filter: blur(30px) saturate(180%);
-            padding: 40px;
-            border-radius: 32px;
+            padding: 30px;
+            border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 40px 100px rgba(0,0,0,0.6);
             position: relative;
@@ -295,7 +298,7 @@ if (isset($_GET['error'])) {
         }
 
         body { 
-            background: transparent !important;
+            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
         }
 
         @media (max-width: 500px) {
@@ -388,7 +391,8 @@ if (isset($_GET['error'])) {
         }
     </style>
 </head>
-<body class="stabilized-car-bg">
+<body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <nav class="hub-bar">
         <a href="dashboard.php" class="logo">Car Hire</a>
@@ -611,6 +615,7 @@ if (isset($_GET['error'])) {
         </div>
     </div>
 
-    <?php include_once '../includes/mobile_nav.php'; ?>
+
 </body>
 </html>
+

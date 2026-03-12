@@ -121,18 +121,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
+        html, body { 
+            background: #080c17 !important; 
+            color: #f8fafc !important; 
+            overflow: hidden !important;
+            height: 100% !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        .portal-content {
+            position: fixed;
+            inset: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-top: 80px;
+            padding-bottom: 110px;
+            overscroll-behavior: none;
+        }
+
         .verify-container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
         .upload-box { border: 2px dashed rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; text-align: center; background: rgba(255,255,255,0.02); transition: all 0.3s; cursor: pointer; }
-        .upload-box:hover { border-color: var(--accent-vibrant); background: rgba(var(--accent-vibrant-rgb), 0.05); }
-        .upload-icon { font-size: 2rem; color: var(--accent-color); margin-bottom: 10px; }
+        .upload-box:hover { border-color: #ff9d00; background: rgba(255,157,0, 0.05); }
+        .upload-icon { font-size: 2rem; color: #ff9d00; margin-bottom: 10px; }
         .file-input { display: none; }
         .status-banner { padding: 20px; border-radius: 16px; margin-bottom: 30px; display: flex; align-items: center; gap: 20px; }
         .status-pending-banner { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #fbbf24; }
         .status-declined-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; }
-        body { 
-            background: url('../public/images/cars/camry.jpg') center/cover no-repeat fixed !important;
-        }
+
 
         /* ── OCR Styles ─────────────────────────────────────────────────── */
         .ocr-scan-btn {
@@ -368,7 +388,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-grid-mobile" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px;">
                     <div class="form-group">
                         <label>ID Type</label>
-                        <select name="id_type" style="width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+                        <select name="id_type" style="width: 100%; padding: 12px; background: rgba(30, 30, 35, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
                             <option value="NRC" <?php echo ($user['id_type'] ?? '') === 'NRC' ? 'selected' : ''; ?>>NRC (National Registration Card)</option>
                             <option value="Passport" <?php echo ($user['id_type'] ?? '') === 'Passport' ? 'selected' : ''; ?>>Passport</option>
                         </select>

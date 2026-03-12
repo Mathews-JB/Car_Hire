@@ -1,9 +1,8 @@
 const CACHE_NAME = 'car-higher-v1';
 const ASSETS_TO_CACHE = [
-    '/',
-    '/index.php',
-    '/public/css/style.css',
-    '/public/images/hero-bg.jpg',
+    './',
+    'index.php',
+    'public/css/style.css',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap'
 ];

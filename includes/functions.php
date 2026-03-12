@@ -238,4 +238,24 @@ function checkAvailability($pdo, $vehicle_id, $pickup_date, $dropoff_date) {
     $stmt->execute([$vehicle_id, $dropoff_date, $pickup_date]);
     return $stmt->fetchColumn() == 0;
 }
+
+/**
+ * Centralized Audit Logging
+ */
+function log_action($pdo, $action, $details = null, $module = null) {
+    if (!$pdo) return false;
+    
+    $user_id = $_SESSION['user_id'] ?? null;
+    $user_name = $_SESSION['user_name'] ?? 'System/Guest';
+    $user_role = $_SESSION['user_role'] ?? 'visitor';
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    
+    try {
+        $stmt = $pdo->prepare("INSERT INTO audit_logs (user_id, user_name, user_role, action, module, details, ip_address) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        return $stmt->execute([$user_id, $user_name, $user_role, $action, $module, $details, $ip]);
+    } catch (PDOException $e) {
+        error_log("Audit log failed: " . $e->getMessage());
+        return false;
+    }
+}
 ?>

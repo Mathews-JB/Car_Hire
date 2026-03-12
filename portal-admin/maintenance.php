@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -31,6 +31,7 @@ if (isset($_POST['add_log'])) {
         $stmt->execute([$mileage, $next_service_km, $vehicle_id]);
 
         $pdo->commit();
+        log_action($pdo, "Added maintenance log", "Vehicle ID: $vehicle_id, Type: $service_type, Cost: ZMW $cost", "Maintenance");
         $success = "Maintenance log added and vehicle records updated.";
     } catch (Exception $e) {
         $pdo->rollBack();
@@ -67,6 +68,9 @@ $pending_services_count = $stmt->fetchColumn();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .service-badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
         .badge-routine { background: rgba(16, 185, 129, 0.1); color: #10b981; }
@@ -80,6 +84,7 @@ $pending_services_count = $stmt->fetchColumn();
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
 
@@ -90,6 +95,7 @@ $pending_services_count = $stmt->fetchColumn();
                     <p class="text-secondary">Track fleet health, service history, and operational costs.</p>
                 </div>
                 <div class="header-actions">
+                    <?php include_once '../includes/theme_switcher.php'; ?>
                     <button class="btn btn-primary" onclick="toggleModal('logModal')"><i class="fas fa-plus"></i> <span class="hide-mobile">Log Service</span><span class="show-mobile">New Log</span></button>
                     <button class="btn btn-outline"><i class="fas fa-file-export"></i> CSV Report</button>
                 </div>
@@ -289,3 +295,4 @@ $pending_services_count = $stmt->fetchColumn();
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

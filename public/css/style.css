@@ -1,5 +1,5 @@
 /* Main CSS for Car Hire */
-html { background-color: #080c17 !important; }
+html { background-color: #121212; }
 
 :root {
   --primary-color: #404040;
@@ -8,8 +8,8 @@ html { background-color: #080c17 !important; }
   --secondary-color: #64748b;
   --accent-color: #ff9d00;
   --accent-vibrant: #ff5e00;
-  --dark-color: #080c17; /* Background */
-  --light-bg: #1a1a20;   /* Accent bg (Grayish instead of Blue) */
+  --dark-color: #121212; /* Background - Neutral Gray instead of Blue */
+  --light-bg: #1a1a1a;   /* Accent bg (Grayish instead of Blue) */
   --white: #ffffff;
   --text-primary: #f8fafc;
   --text-secondary: rgba(255, 255, 255, 0.7);
@@ -110,8 +110,8 @@ header {
 
 header.scrolled,
 .header-solid {
-  background: rgba(30, 30, 35, 0.85);
-  /* Dark Glass */
+  background: rgba(25, 25, 25, 0.9);
+  /* Neutral Dark Glass */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 1rem 0;
@@ -178,8 +178,8 @@ nav {
   /* Global Glassmorphic Overlay - Dark Grayish Transparent */
   background: linear-gradient(
     to bottom,
-    rgba(30, 30, 35, 0.85),
-    rgba(20, 20, 25, 0.75)
+    rgba(25, 25, 25, 0.9),
+    rgba(15, 15, 15, 0.85)
   );
 }
 
@@ -715,8 +715,8 @@ input[type="time"].form-control {
 footer {
   background: linear-gradient(
     to bottom,
-    rgba(30, 30, 35, 0.5),
-    rgba(25, 25, 30, 0.8)
+    rgba(20, 20, 20, 0.6),
+    rgba(10, 10, 10, 0.9)
   ) !important;
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
@@ -837,16 +837,18 @@ footer::before {
   padding: 0 !important;
   text-align: left;
   overflow: hidden;
-  background: rgba(30, 41, 59, 0.7) !important;
-  /* Dark Glassmorphism Grey */
+  background: rgba(30, 30, 30, 0.8) !important;
+  /* Dark Neutral Glassmorphism Gray */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .fleet-img {
   width: 100%;
-  height: 240px;
+  height: 280px;
   object-fit: cover;
   display: block;
   transition: transform 0.5s ease;
@@ -859,6 +861,9 @@ footer::before {
 .fleet-info {
   padding: 25px 30px;
   background: transparent !important;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .fleet-info h3 {
@@ -895,10 +900,10 @@ body::before {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(25, 25, 30, 0.88),
-    rgba(20, 20, 25, 0.85)
+    rgba(20, 20, 20, 0.9),
+    rgba(15, 15, 15, 0.85)
   );
-  /* Deep premium grey overlay while keeping background car visible */
+  /* Deep premium neutral grey overlay */
   z-index: -1;
 }
 
@@ -1016,6 +1021,45 @@ body::before {
   width: 260px;
   height: 100vh;
   z-index: 1000;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
+}
+
+.sidebar.collapsed {
+  width: 90px;
+}
+
+.sidebar.collapsed .sidebar-header {
+  padding: 30px 15px 20px;
+}
+
+.sidebar.collapsed .logo-text-wrapper,
+.sidebar.collapsed .sidebar-menu span:not(.nav-badge-inline),
+.sidebar.collapsed .sidebar-footer span,
+.sidebar.collapsed .dropdown-trigger .arrow,
+.sidebar.collapsed .nav-badge-inline,
+.sidebar.collapsed .sidebar-notif-bell {
+  display: none !important;
+}
+
+.sidebar.collapsed .sidebar-header > div > div {
+  margin: 0 auto;
+}
+
+.sidebar.collapsed .logo-img {
+  margin: 0 auto; /* Center logo img */
+}
+
+.sidebar.collapsed .sidebar-dropdown .dropdown-content {
+  display: none !important;
+}
+
+.sidebar.collapsed .sidebar-menu a,
+.sidebar.collapsed .sidebar-footer a,
+.sidebar.collapsed .dropdown-trigger {
+  grid-template-columns: 1fr !important;
+  justify-content: center !important;
+  padding: 12px 0 !important;
 }
 
 .sidebar-header {
@@ -1256,6 +1300,8 @@ body::before {
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+.how-it-works-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-bottom: 30px; }
 .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
 .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 30px; }
 
@@ -1291,6 +1337,11 @@ body::before {
   padding: 24px 32px; /* Reduced from 40px for tighter feel */
   background: transparent;
   min-height: 100vh;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.sidebar-collapsed .main-content {
+  margin-left: 90px;
 }
 
 /* Modals */
@@ -1575,26 +1626,14 @@ hr {
 }
 
 .data-card {
-  background: rgba(30, 30, 35, 0.85);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(20, 20, 20, 0.65) !important;
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 20px;
   padding: 30px;
   overflow-x: auto;
   color: white;
-}
-
-.summary-card h4 {
-  color: var(--accent-color);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-
-.summary-card smail {
-  color: rgba(255, 255, 255, 0.6);
 }
 
 /* Stat Cards */
@@ -1635,14 +1674,6 @@ hr {
 }
 
 /* KPI / Summary Cards */
-.summary-card h4 {
-  color: var(--accent-color) !important;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 800;
-}
-
 .summary-card p {
   color: white !important;
   font-size: 2.2rem;
@@ -1653,6 +1684,21 @@ hr {
 .summary-card small {
   color: rgba(255, 255, 255, 0.8) !important;
   font-size: 0.8rem;
+}
+
+/* Global Grid Utilities */
+.stats-grid, .how-it-works-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  gap: 25px !important;
+  width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .stats-grid, .how-it-works-grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
 }
 
 /* Vehicle Mini Component */

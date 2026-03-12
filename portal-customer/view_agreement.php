@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -42,6 +42,9 @@ if (!$b) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         :root {
             --primary: #2563eb;
@@ -146,6 +149,7 @@ if (!$b) {
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <div class="no-print">
         <button class="btn" onclick="window.print()"><i class="fas fa-print"></i> Print Agreement / Save as PDF</button>
@@ -242,3 +246,4 @@ if (!$b) {
 
 </body>
 </html>
+

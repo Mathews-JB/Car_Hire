@@ -56,6 +56,21 @@ $stmt = $pdo->prepare("SELECT b.*, v.make, v.model, v.image_url, v.year, v.capac
                        ORDER BY b.created_at DESC");
 $stmt->execute([$user_id]);
 $bookings = $stmt->fetchAll();
+
+// Calculate Stats for "My Activity" section
+$active_rentals = 0;
+$total_spent = 0;
+foreach ($bookings as $b) {
+    if ($b['status'] === 'confirmed' || $b['status'] === 'active') $active_rentals++;
+    if ($b['status'] !== 'cancelled') $total_spent += $b['total_price'];
+}
+$total_bookings = count($bookings);
+
+// Membership Tier Logic
+$membership_tier = 'Member';
+if ($total_spent > 50000) $membership_tier = 'Black Diamond';
+elseif ($total_spent > 20000) $membership_tier = 'Platinum';
+elseif ($total_spent > 5000) $membership_tier = 'Gold';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,6 +81,9 @@ $bookings = $stmt->fetchAll();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css?v=2.1">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         body { 
             background: transparent !important;
@@ -217,6 +235,9 @@ $bookings = $stmt->fetchAll();
             <a href="profile.php"><?php echo __('profile'); ?></a>
         </div>
         <div class="hub-user">
+            <!-- Theme Switcher -->
+            <?php include_once '../includes/theme_switcher.php'; ?>
+            
             <?php 
                 $display_name = $_SESSION['user_name'] ?? 'User';
                 $first_name = explode(' ', $display_name)[0];
@@ -247,9 +268,49 @@ $bookings = $stmt->fetchAll();
                     <?php endif; ?>
                     <a href="browse-vehicles.php" class="btn btn-primary"><i class="fas fa-plus"></i> <?php echo __('new_booking'); ?></a>
                 </div>
+            </div> <!-- Close dashboard-header -->
 
+            <div class="how-it-works-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 30px; margin-bottom: 40px;">
+                <div class="data-card how-it-works-step" style="border-left: 4px solid var(--success) !important;">
+                    <div class="how-it-works-content">
+                        <div class="step-icon">
+                            <i class="fas fa-car-side" style="font-size: 1.5rem; color: var(--success);"></i>
+                        </div>
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;"><?php echo $active_rentals; ?></h3>
+                        <p style="font-size: 0.85rem; opacity: 0.8;"><?php echo __('active_rentals'); ?></p>
+                    </div>
+                </div>
+
+                <div class="data-card how-it-works-step" style="border-left: 4px solid var(--accent-color) !important;">
+                    <div class="how-it-works-content">
+                        <div class="step-icon">
+                            <i class="fas fa-calendar-check" style="font-size: 1.5rem; color: var(--accent-color);"></i>
+                        </div>
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;"><?php echo $total_bookings; ?></h3>
+                        <p style="font-size: 0.85rem; opacity: 0.8;"><?php echo __('total_bookings'); ?></p>
+                    </div>
+                </div>
+
+                <div class="data-card how-it-works-step" style="border-left: 4px solid #3b82f6 !important;">
+                    <div class="how-it-works-content">
+                        <div class="step-icon">
+                            <i class="fas fa-receipt" style="font-size: 1.5rem; color: #3b82f6;"></i>
+                        </div>
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;">ZMW <?php echo number_format($total_spent, 0); ?></h3>
+                        <p style="font-size: 0.85rem; opacity: 0.8;"><?php echo __('total_spent'); ?></p>
+                    </div>
+                </div>
+
+                <div class="data-card how-it-works-step" style="border-left: 4px solid #ffd700 !important;">
+                    <div class="how-it-works-content">
+                        <div class="step-icon">
+                            <i class="fas fa-award" style="font-size: 1.5rem; color: #ffd700;"></i>
+                        </div>
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;"><?php echo $membership_tier; ?></h3>
+                        <p style="font-size: 0.85rem; opacity: 0.8;"><?php echo __('member_status'); ?></p>
+                    </div>
+                </div>
             </div>
-
 
             <?php if($success): ?>
                 <div class="form-feedback success" style="margin-bottom: 25px; padding: 15px; background: rgba(16,185,129,0.1); border: 1px solid var(--success); border-radius: 12px; color: var(--success);">

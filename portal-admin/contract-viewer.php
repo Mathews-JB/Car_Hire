@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -43,6 +43,9 @@ $days = $start->diff($end)->days ?: 1;
     <meta charset="UTF-8">
     <title>Rental Agreement - <?php echo $reference; ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         :root {
             --primary: #111827;
@@ -171,9 +174,10 @@ $days = $start->diff($end)->days ?: 1;
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <div class="controls no-print">
-        <a href="contracts.php" class="btn btn-outline">← Back to Hub</a>
+        <a href="contracts.php" class="btn btn-outline">â† Back to Hub</a>
         <div>
             <button onclick="window.print()" class="btn btn-outline">Print Agreement</button>
             <button id="downloadBtn" class="btn btn-primary">Download PDF</button>
@@ -350,3 +354,4 @@ $days = $start->diff($end)->days ?: 1;
     </script>
 </body>
 </html>
+

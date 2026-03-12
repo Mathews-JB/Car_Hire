@@ -298,8 +298,13 @@ $brands_list = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll()
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
+
 
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
@@ -328,6 +333,7 @@ $brands_list = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll()
                     <p class="text-secondary">Manage vehicle inventory and status.</p>
                 </div>
                 <div class="header-actions">
+                    <?php include_once '../includes/theme_switcher.php'; ?>
                     <a href="reports.php?type=fleet" class="btn btn-outline" style="border-color: rgba(255,255,255,0.1);"><i class="fas fa-file-export"></i> CSV</a>
                     <button class="btn btn-outline" onclick="openModal('brandModal')"><i class="fas fa-tags"></i> Brands</button>
                     <button class="btn btn-primary" onclick="openModal('vehicleModal')"><i class="fas fa-plus"></i> Add Vehicle</button>

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -24,6 +24,9 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         /* --- Dark Mode Pro Theme --- */
         body { 
@@ -280,6 +283,7 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
 <div class="admin-layout">
     <!-- Desktop Sidebar -->
@@ -295,7 +299,7 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
             <div class="circle-btn d-md-none" onclick="history.back()"><i class="fas fa-arrow-left"></i></div>
             
             <div class="earnings-card">
-                <div class="earnings-header">Fleet Status • Live</div>
+                <div class="earnings-header">Fleet Status â€¢ Live</div>
                 <div class="earnings-body">
                     <div class="earnings-details">
                         <span><i class="fas fa-car-side"></i> <?php echo count($vehicles); ?> Total</span>
@@ -550,3 +554,4 @@ foreach($vehicles as $v) if($v['status'] == 'hired') $hired_count++;
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

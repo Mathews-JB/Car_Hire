@@ -40,9 +40,12 @@ $search_query = trim($_GET['search'] ?? '');
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="public/css/style.css?v=2.7">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="public/css/theme.css?v=4.0">
+    <script src="public/js/theme-switcher.js?v=4.0"></script>
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#333333">
     <link rel="apple-touch-icon" href="public/images/icon-192x192.png">
     <style>
         .fleet-header { background: var(--bg-dark); padding: 60px 0; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -65,9 +68,9 @@ $search_query = trim($_GET['search'] ?? '');
             border-color: var(--accent-vibrant);
             box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
         }
-        .fleet-card { padding: 0 !important; overflow: hidden !important; border: 1px solid rgba(0,0,0,0.05); background: white; border-radius: 16px; box-shadow: var(--shadow); transition: all 0.3s ease; }
+        .fleet-card { padding: 0 !important; overflow: hidden !important; border: 1px solid rgba(255,255,255,0.05); background: rgba(30, 30, 30, 0.8) !important; border-radius: 16px; box-shadow: var(--shadow); transition: all 0.3s ease; }
         .fleet-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .fleet-img { width: 100%; height: 220px; object-fit: cover; }
+        .fleet-img { width: 100%; height: 280px; object-fit: cover; }
         .fleet-info { padding: 25px; }
         .search-compact { margin-top: -40px; position: relative; z-index: 100; }
         body { background: transparent !important; }
@@ -128,15 +131,20 @@ $search_query = trim($_GET['search'] ?? '');
                 gap: 8px !important;
                 padding: 0 4px !important;
             }
-            .fleet-card {
+             .fleet-card {
                 max-width: 100% !important;
                 border-radius: 12px !important;
+                display: flex !important;
+                flex-direction: column !important;
             }
             .fleet-img {
-                height: 100px !important;
+                height: 140px !important;
             }
             .fleet-info {
                 padding: 10px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                flex: 1 !important;
             }
             .fleet-info h3 {
                 font-size: 0.85rem !important;
@@ -234,7 +242,10 @@ $search_query = trim($_GET['search'] ?? '');
                 <li><a href="our-fleet.php" class="active"><?php echo __('search_title'); ?></a></li>
                 <li><a href="index.php#about">Features</a></li>
             </ul>
-            <div class="auth-buttons" style="display: flex; gap: 10px; align-items: center;">
+            <div class="auth-buttons" style="display: flex; gap: 15px; align-items: center;">
+                <!-- Theme Switcher -->
+                <?php include_once 'includes/theme_switcher.php'; ?>
+
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="portal-customer/dashboard.php" class="btn btn-primary" style="padding: 0.6rem 1.2rem;"><?php echo __('profile'); ?></a>
                 <?php else: ?>
@@ -254,7 +265,7 @@ $search_query = trim($_GET['search'] ?? '');
 
     <!-- Compact Search -->
     <div class="container search-compact">
-        <div class="auth-card" style="max-width: 800px; margin: 0 auto; border-radius: 24px; padding: 25px; border: 1px solid rgba(255,255,255,0.05);">
+        <div class="auth-card" style="max-width: 600px; margin: 0 auto; border-radius: 24px; padding: 25px; border: 1px solid rgba(255,255,255,0.05);">
             <form action="our-fleet.php" method="GET" class="search-form" style="display: flex; gap: 15px; width: 100%;">
                 <input type="hidden" name="brand" value="<?php echo htmlspecialchars($brand_id); ?>">
                 <div class="form-group" style="flex: 1; margin-bottom: 0;">
@@ -385,11 +396,11 @@ $search_query = trim($_GET['search'] ?? '');
                         </div>
                     </div>
                     <div class="fleet-info" style="padding: 20px;">
-                        <span class="brand-name" style="color: var(--accent-color); font-weight: 700; font-size: 0.7rem; text-transform: uppercase;"><?php echo htmlspecialchars($vehicle['brand_name']); ?></span>
+                        <span class="brand-name" style="display: block; color: var(--accent-color); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; min-height: 1em;"><?php echo htmlspecialchars($vehicle['brand_name']); ?></span>
                         <h3 style="margin-top: 5px; margin-bottom: 2px; color: white;"><?php echo htmlspecialchars($vehicle['make'] . ' ' . $vehicle['model']); ?></h3>
                         <p class="vehicle-meta" style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo $vehicle['year']; ?> • Auto</p>
                         
-                        <div class="fleet-card-footer" style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div class="fleet-card-footer" style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <span class="price-val" style="font-weight: 900; color: white; font-size: 1.4rem;">K<?php echo number_format($vehicle['price_per_day'], 0); ?></span>
                                 <span style="font-size: 0.75rem; color: rgba(255,255,255,0.5); font-weight: 600;">/ day</span>
@@ -404,8 +415,7 @@ $search_query = trim($_GET['search'] ?? '');
         </div>
     </main>
 
-    <!-- Footer -->
-    <?php include_once 'includes/footer.php'; ?>
+
 
     <?php include_once 'includes/mobile_nav.php'; ?>
     <script>

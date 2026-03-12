@@ -85,7 +85,14 @@ if (
             $stmt = $pdo->prepare("UPDATE bookings SET status = 'confirmed' WHERE id = ?");
             $stmt->execute([$booking_id]);
 
+            // C. Sync with Support Quotes (if applicable)
+            $stmt = $pdo->prepare("UPDATE support_messages SET quote_status = 'paid' WHERE booking_id = ?");
+            $stmt->execute([$booking_id]);
+
             $pdo->commit();
+
+            // Log the payment
+            log_action($pdo, "Payment Verified", "Booking #$booking_id, Amount: ZMW " . number_format($lenco_amount, 2) . ", Provider: Lenco ($transaction_id)", "Finance");
 
             // 6. Send WhatsApp payment success notification
             try {

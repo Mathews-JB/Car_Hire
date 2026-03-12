@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -62,6 +62,9 @@ $modules = $pdo->query("SELECT DISTINCT module FROM audit_logs WHERE module IS N
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .audit-table-container {
             background: rgba(30, 41, 59, 0.4);
@@ -116,6 +119,7 @@ $modules = $pdo->query("SELECT DISTINCT module FROM audit_logs WHERE module IS N
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
 
@@ -225,3 +229,4 @@ $modules = $pdo->query("SELECT DISTINCT module FROM audit_logs WHERE module IS N
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

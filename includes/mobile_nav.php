@@ -176,6 +176,10 @@ if ($is_logged_in) {
                     <i class="fas fa-file-contract"></i>
                     <span>Agreements</span>
                 </a>
+                <a href="support-inbox.php" class="v3-menu-item" style="border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.03);">
+                    <i class="fas fa-car-side" style="color: #60a5fa;"></i>
+                    <span style="color: #60a5fa;">Event Quotes</span>
+                </a>
                 <a href="vouchers.php" class="v3-menu-item">
                     <i class="fas fa-ticket-alt"></i>
                     <span>Coupons</span>
@@ -240,6 +244,13 @@ if ($is_logged_in) {
                     <span>Hardening</span>
                 </a>
 
+                <!-- Theme Selection for Admin Mobile Drawer -->
+                <div class="v3-menu-section-title">Interface Theme</div>
+                <div class="v3-menu-item" style="grid-column: span 2; flex-direction: row; gap: 20px; padding: 20px;">
+                     <?php include __DIR__ . '/theme_switcher.php'; ?>
+                     <span style="font-size: 0.9rem; font-weight: 800;">Toggle Display Mode</span>
+                </div>
+
                 <!-- Logout -->
                 <a href="<?php echo $logout_path; ?>" class="v3-menu-item" style="grid-column: span 2; background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.15); margin-top: 10px; padding: 18px;">
                     <i class="fas fa-power-off" style="background:none; -webkit-text-fill-color: #ef4444; color:#ef4444; font-size: 1.2rem;"></i>
@@ -262,7 +273,15 @@ if ($is_logged_in) {
                     <i class="fas fa-user-circle"></i>
                     <span>My Profile</span>
                 </a>
-                <a href="<?php echo $logout_path; ?>" class="v3-menu-item" style="grid-column: span 2; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2);">
+                
+                <!-- Theme Selection in Mobile Drawer -->
+                <div class="v3-menu-section-title">Display Theme</div>
+                <div class="v3-menu-item" style="grid-column: span 2; flex-direction: row; gap: 20px; padding: 20px;">
+                     <?php include __DIR__ . '/theme_switcher.php'; ?>
+                     <span style="font-size: 0.9rem; font-weight: 700;">Switch UI Theme</span>
+                </div>
+
+                <a href="<?php echo $logout_path; ?>" class="v3-menu-item" style="grid-column: span 2; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); margin-top: 10px;">
                     <i class="fas fa-sign-out-alt" style="background:none; -webkit-text-fill-color: #ef4444; color:#ef4444;"></i>
                     <span style="color: #ef4444;">Sign Out</span>
                 </a>

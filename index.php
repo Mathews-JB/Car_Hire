@@ -20,23 +20,48 @@ header("Pragma: no-cache");
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="public/css/style.css?v=2.7">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="public/css/theme.css?v=4.0">
+    <script src="public/js/theme-switcher.js?v=4.0"></script>
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#333333">
     <link rel="apple-touch-icon" href="public/images/icon-192x192.png">
 </head>
 <body>
+    <?php include_once 'includes/mobile_header.php'; ?>
 
-    <!-- App Splash Preloader -->
-    <div id="appSplash" class="app-splash">
-        <div class="splash-logo-container">
-            <img src="public/images/splash_logo.png" class="splash-logo-img" alt="Logo">
+    <!-- Floating PWA Install Provision (Premium Glassmorphism) -->
+    <div id="landing-pwa-banner" style="display: none; position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%) translateY(50px); z-index: 1000001 !important; width: 90%; max-width: 360px; opacity: 0; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); flex-direction: column; align-items: center; gap: 10px;">
+        <button id="landing-pwa-btn" style="background: rgba(45, 45, 45, 0.75); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); color: white; border: 1px solid rgba(255,255,255,0.12); padding: 14px 40px; border-radius: 100px; font-size: 0.9rem; font-weight: 700; box-shadow: 0 15px 35px rgba(0,0,0,0.5); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; letter-spacing: 0.8px; width: 100%; transition: all 0.3s; text-transform: uppercase;">
+            <i class="fas fa-download" id="pwa-icon" style="color: #cbd5e1;"></i>
+            <span id="pwa-text">Install App</span>
+        </button>
+        <!-- Progress Container (Subtle) -->
+        <div id="pwa-progress-container" style="display: none; width: 80%; background: rgba(255,255,255,0.05); border-radius: 10px; height: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+            <div id="pwa-progress-bar" style="width: 0%; height: 100%; background: #94a3b8; transition: width 0.3s ease;"></div>
         </div>
-        <div class="splash-loader-container">
-            <div id="splashProgress" class="splash-progress-bar"></div>
-        </div>
-        <div class="splash-loading-text">Synchronizing Fleet...</div>
     </div>
+
+    <style>
+        @media (max-width: 768px) {
+            #fleet.container {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            .features-grid {
+                gap: 15px !important;
+                padding: 0 !important;
+            }
+            .feature-card.fleet-card {
+                margin: 0 !important;
+                width: 100% !important;
+                border-radius: 12px !important;
+            }
+        }
+    </style>
 
     <!-- Header -->
     <header id="mainHeader">
@@ -49,6 +74,9 @@ header("Pragma: no-cache");
                 <li><a href="#" onclick="openManual(); return false;" style="color: var(--accent-vibrant);"><i class="fas fa-book"></i> User Manual</a></li>
             </ul>
             <div class="auth-buttons" style="display: flex; gap: 15px; align-items: center;">
+                <!-- Theme Switcher -->
+                <?php include 'includes/theme_switcher.php'; ?>
+
                 <!-- Language Switcher -->
                 <div class="lang-switcher" style="position: relative;">
                     <button class="btn btn-outline" style="border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; padding: 5px 12px; font-size: 0.8rem; border-radius: 8px; display: flex; align-items: center; gap: 8px;" onclick="document.getElementById('langDropdown').classList.toggle('show')">
@@ -119,43 +147,17 @@ header("Pragma: no-cache");
 
     <!-- Search Section -->
     <section class="container" id="search" style="position: relative; z-index: 50;">
-        <div class="search-container data-card" id="mobile-search-adjust">
-            <form action="our-fleet.php" method="GET" class="search-form">
-                <div class="form-group">
-                    <label>Where to pick up?</label>
+        <div class="search-container data-card" id="mobile-search-adjust" style="max-width: 600px; margin: 0 auto; transform: translateY(-50%);">
+            <form action="our-fleet.php" method="GET" class="search-form" style="display: flex; gap: 10px; width: 100%;">
+                <div class="form-group" style="flex: 1; margin: 0;">
                     <div style="position: relative;">
-                        <i class="fas fa-map-marker-alt" style="position: absolute; left: 15px; top: 15px; color: var(--primary-color);"></i>
-                        <select name="pickup_location" class="premium-select" style="padding-left: 45px; width: 100%; height: 50px; border: none;">
-                            <option value="">Select Location</option>
-                            <option value="Lusaka" <?php echo ($_GET['pickup_location'] ?? '') == 'Lusaka' ? 'selected' : ''; ?>>Lusaka (Central)</option>
-                            <option value="Livingstone" <?php echo ($_GET['pickup_location'] ?? '') == 'Livingstone' ? 'selected' : ''; ?>>Livingstone (Tourism Hub)</option>
-                            <option value="Ndola" <?php echo ($_GET['pickup_location'] ?? '') == 'Ndola' ? 'selected' : ''; ?>>Ndola (Copperbelt)</option>
-                        </select>
+                        <i class="fas fa-search" style="position: absolute; left: 20px; top: 18px; color: var(--accent-vibrant); font-size: 1.2rem;"></i>
+                        <input type="text" name="search" placeholder="Search by make, model, or category..."
+                               style="width: 100%; height: 60px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 0 20px 0 55px; color: white; font-size: 1.1rem; outline: none;"
+                               value="<?php echo $_GET['search'] ?? ''; ?>">
                     </div>
                 </div>
-                <div class="form-group" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px;">
-                    <div>
-                        <label>Pickup Date</label>
-                        <input type="date" name="pickup_date" value="<?php echo $_GET['pickup_date'] ?? ''; ?>" min="<?php echo date('Y-m-d'); ?>" style="width: 100%; background: #f8fafc; border: none; height: 50px; border-radius: 12px; padding: 0 15px;">
-                    </div>
-                    <div>
-                        <label>Time</label>
-                        <input type="time" name="pickup_time" value="<?php echo $_GET['pickup_time'] ?? '10:00'; ?>" style="width: 100%; background: #f8fafc; border: none; height: 50px; border-radius: 12px; padding: 0 15px;">
-                    </div>
-                </div>
-                <div class="form-group" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px;">
-                    <div>
-                        <label>Drop-off Date</label>
-                        <input type="date" name="dropoff_date" value="<?php echo $_GET['dropoff_date'] ?? ''; ?>" min="<?php echo date('Y-m-d'); ?>" style="width: 100%; background: #f8fafc; border: none; height: 50px; border-radius: 12px; padding: 0 15px;">
-                    </div>
-                    <div>
-                        <label>Time</label>
-                        <input type="time" name="dropoff_time" value="<?php echo $_GET['dropoff_time'] ?? '10:00'; ?>" style="width: 100%; background: #f8fafc; border: none; height: 50px; border-radius: 12px; padding: 0 15px;">
-                    </div>
-                </div>
-                <div class="form-group" style="display: flex; align-items: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="height: 50px; width: 100%; border-radius: 12px; background: var(--accent-vibrant); font-weight: 700;">Update Results</button>
-                </div>
+                <button type="submit" class="btn btn-primary" style="height: 60px; padding: 0 40px; border-radius: 16px; background: var(--accent-vibrant); font-weight: 800; font-size: 1.1rem; box-shadow: 0 10px 25px rgba(255, 94, 0, 0.3);">SEARCH</button>
             </form>
         </div>
     </section>
@@ -170,11 +172,11 @@ header("Pragma: no-cache");
         <div style="text-align: center; margin-bottom: 30px;">
             <div class="features-grid" style="margin-bottom: 30px;">
                 <?php
-                $stmt = $pdo->query("SELECT v.*, b.name as brand_name FROM vehicles v 
-                                  LEFT JOIN brands b ON v.brand_id = b.id 
+                $stmt = $pdo->query("SELECT v.*, b.name as brand_name FROM vehicles v
+                                  LEFT JOIN brands b ON v.brand_id = b.id
                                   ORDER BY CASE WHEN LOWER(TRIM(v.status)) = 'available' THEN 0 ELSE 1 END, v.price_per_day DESC LIMIT 3");
                 $featured = $stmt->fetchAll();
-                
+
                 foreach ($featured as $vehicle):
                 ?>
                     <div class="feature-card fleet-card">
@@ -182,7 +184,7 @@ header("Pragma: no-cache");
                         <div class="fleet-info">
                             <h3 style="margin-bottom: 5px;"><?php echo htmlspecialchars($vehicle['make'] . ' ' . $vehicle['model']); ?></h3>
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                                <?php 
+                                <?php
                                 $status = trim(strtolower($vehicle['status']));
                                 $badge_bg = ($status === 'available') ? '#10b981' : (($status === 'maintenance') ? '#f59e0b' : '#ef4444');
                                 $status_txt = ($status === 'available') ? 'AVAILABLE' : (($status === 'maintenance') ? 'SERVICE' : 'HIRED');
@@ -190,7 +192,7 @@ header("Pragma: no-cache");
                                 <span style="background: <?php echo $badge_bg; ?>; color: white; font-size: 0.6rem; font-weight: 800; padding: 3px 8px; border-radius: 4px;"><?php echo $status_txt; ?></span>
                                 <p style="font-size: 0.85rem; color: var(--secondary-color); margin: 0;"><?php echo $vehicle['year']; ?> • Premium</p>
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
                                 <span style="font-weight: 800; color: var(--primary-color);">K<?php echo number_format($vehicle['price_per_day'], 0); ?>/day</span>
                                 <a href="vehicle-details.php?id=<?php echo $vehicle['id']; ?>" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.75rem;">View Details</a>
                             </div>
@@ -198,7 +200,7 @@ header("Pragma: no-cache");
                     </div>
                 <?php endforeach; ?>
             </div>
-            
+
             <a href="our-fleet.php" class="btn btn-primary btn-lg" style="padding: 1.2rem 3rem; background: var(--bg-dark); border: none; font-weight: 800; letter-spacing: 1px;">
                 VIEW FULL COLLECTIONS <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
             </a>
@@ -209,7 +211,7 @@ header("Pragma: no-cache");
     <div class="premium-marquee-wrapper" style="padding-bottom: 30px;">
         <div class="premium-marquee">
             <div class="marquee-track">
-                <?php 
+                <?php
                 $demo_cars = [
                     ['img' => 'public/images/cars/g63.jpg', 'title' => 'G63 AMG', 'cat' => 'Ultra Luxury'],
                     ['img' => 'public/images/cars/defender.jpg', 'title' => 'Land Rover Defender', 'cat' => 'Off-Road King'],
@@ -220,7 +222,7 @@ header("Pragma: no-cache");
                     ['img' => 'public/images/cars/navara.jpg', 'title' => 'Nissan Navara', 'cat' => 'Tough Utility'],
                     ['img' => 'public/images/cars/everest.jpg', 'title' => 'Ford Everest', 'cat' => 'Family 4x4']
                 ];
-                
+
                 // Duplicate for seamless infinite scroll
                 for ($i = 0; $i < 2; $i++):
                     foreach ($demo_cars as $car): ?>
@@ -231,7 +233,7 @@ header("Pragma: no-cache");
                                 <h4><?php echo $car['title']; ?></h4>
                             </div>
                         </div>
-                    <?php endforeach; 
+                    <?php endforeach;
                 endfor; ?>
             </div>
         </div>
@@ -261,37 +263,51 @@ header("Pragma: no-cache");
             </div>
         </div>
     </section>
- 
-     <!-- Footer -->
-     <footer>
-        <div class="container">
-            <h4 style="text-align: center; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 30px;">Reach Us</h4>
-            <div class="footer-contact-row">
-                <div class="footer-contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>+260 970 000 000</span>
-                </div>
-                <div class="footer-contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>info@CarHire.zm</span>
-                </div>
-                <div class="footer-contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Lusaka, Zambia</span>
-                </div>
-            </div>
+
+    <!-- Mobile App Download Section (Premium QR Codes) -->
+    <section class="container" style="padding-bottom: 80px;">
+        <div class="data-card" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6)); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 30px; padding: 60px 40px; text-align: center; position: relative; overflow: hidden;">
+            <!-- Subtle Background Glow -->
+            <div style="position: absolute; top: -50%; left: -10%; width: 40%; height: 200%; background: radial-gradient(circle, rgba(245, 158, 11, 0.05) 0%, transparent 70%); transform: rotate(-15deg); pointer-events: none;"></div>
             
-            <div class="footer-copyright">
-                <p>&copy; <?php echo date('Y'); ?> Car Hire Zambia. All rights reserved.</p>
+            <div style="position: relative; z-index: 10;">
+                <span style="color: var(--accent-color); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 0.85rem;">Seamless Experience</span>
+                <h2 style="font-size: 2.5rem; font-weight: 900; color: white; margin: 15px 0 10px; letter-spacing: -1px;">Download Our Mobile App</h2>
+                <p style="color: rgba(255,255,255,0.6); max-width: 600px; margin: 0 auto 40px; line-height: 1.6;">Take your premium car rental experience on the go. Scan the codes below to download our professional app for your device.</p>
+                
+                <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                    <!-- Android QR -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 20px; transition: all 0.3s ease; width: 220px;" onmouseover="this.style.transform='translateY(-10px)'; this.style.borderColor='rgba(16, 185, 129, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.08)';">
+                        <div style="background: white; border-radius: 12px; padding: 10px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                            <img src="public/images/android_qr.png" alt="Android QR" style="width: 100%; display: block; filter: none;">
+                        </div>
+                        <div style="background: #10b981; color: white; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fab fa-android"></i> ANDROID APP
+                        </div>
+                    </div>
+                    
+                    <!-- iOS QR -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 20px; transition: all 0.3s ease; width: 220px;" onmouseover="this.style.transform='translateY(-10px)'; this.style.borderColor='rgba(59, 130, 246, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.08)';">
+                        <div style="background: white; border-radius: 12px; padding: 10px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                            <img src="public/images/ios_qr.png" alt="iOS QR" style="width: 100%; display: block; filter: none;">
+                        </div>
+                        <div style="background: #ffffff; color: #000; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fab fa-apple"></i> iPHONE APP
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
+    </section>
 
+     <!-- Footer -->
+     <?php include_once 'includes/footer.php'; ?>
     <style>
         .brand-chip {
             padding: 10px 20px;
-            background: #f1f5f9;
-            color: #64748b;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 50px;
             font-size: 0.85rem;
             font-weight: 600;
@@ -300,8 +316,8 @@ header("Pragma: no-cache");
             text-decoration: none;
         }
         .brand-chip:hover {
-            background: #e2e8f0;
-            color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
         }
         .brand-chip.active {
             background: var(--accent-vibrant);
@@ -312,7 +328,7 @@ header("Pragma: no-cache");
         .fleet-img { width: 100%; height: 220px; object-fit: cover; transition: transform 0.5s ease; }
         .fleet-card:hover .fleet-img { transform: scale(1.05); }
         .fleet-info { padding: 25px; }
-        
+
         @media (max-width: 768px) {
             .container { padding: 0 8px !important; }
             #mobile-search-adjust { margin-top: -30px !important; padding: 20px !important; }
@@ -334,40 +350,61 @@ header("Pragma: no-cache");
         .manual-modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 10000;
+            inset: 0;
+            background: rgba(8, 12, 23, 0.7);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            z-index: 2000000 !important;
             overflow-y: auto;
-            padding: 20px;
-            animation: fadeIn 0.4s ease;
+            -webkit-overflow-scrolling: touch;
+            padding: 10px;
+            overscroll-behavior: contain;
         }
+
 
         .manual-content {
             max-width: 1000px;
-            margin: 40px auto;
-            background: rgba(30, 30, 35, 0.85);
+            margin: 20px auto;
+            background: rgba(30, 30, 35, 0.95);
             backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 32px;
+            border-radius: 24px;
             overflow: hidden;
             display: grid;
             grid-template-columns: 280px 1fr;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
-            min-height: 650px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+            min-height: 550px;
         }
 
         .manual-sidebar {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(40, 40, 45, 0.5);
             padding: 40px 20px;
             border-right: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
             gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .manual-content {
+                grid-template-columns: 1fr !important;
+                margin: 10px auto;
+                min-height: auto;
+                border-radius: 20px;
+            }
+            .manual-sidebar {
+                display: none !important; /* Hide navigation sidebar on mobile for cleaner flow */
+            }
+            .manual-main {
+                padding: 25px 15px !important;
+            }
+            .manual-badge { font-size: 0.6rem !important; }
+            .manual-step-title { font-size: 1.4rem !important; }
+            .manual-controls {
+                flex-direction: column-reverse;
+                gap: 15px;
+            }
+            .manual-controls button { width: 100% !important; }
         }
 
         .manual-nav-item {
@@ -470,7 +507,7 @@ header("Pragma: no-cache");
         }
 
         .manual-note {
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(30, 30, 35, 0.7);
             border-radius: 20px;
             padding: 25px;
             margin-top: 40px;
@@ -579,7 +616,7 @@ header("Pragma: no-cache");
         /* Floating Manual Button (Mobile Only) */
         .floating-manual-btn {
             position: fixed;
-            bottom: 30px;
+            bottom: 180px;
             right: 20px;
             width: 56px;
             height: 56px;
@@ -590,7 +627,7 @@ header("Pragma: no-cache");
             justify-content: center;
             box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
             cursor: pointer;
-            z-index: 9999;
+            z-index: 1000002;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -876,13 +913,15 @@ header("Pragma: no-cache");
 
         function openManual() {
             document.getElementById('manualModal').style.display = 'block';
+            document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
             updateProgressBar();
         }
         
         function closeManual() {
             document.getElementById('manualModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
         }
 
         function goToStep(step) {
@@ -961,33 +1000,6 @@ header("Pragma: no-cache");
             dd.style.display = isVisible ? 'none' : 'block';
             dd.classList.toggle('show');
         }
-    </script>
-    <!-- PWA Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('Service Worker registered'))
-                    .catch(err => console.log('Service Worker registration failed', err));
-            });
-        }
-    </script>
-    <script>
-        // High-end App Splash Handler
-        window.addEventListener('load', function() {
-            const splash = document.getElementById('appSplash');
-            const progress = document.getElementById('splashProgress');
-            
-            // Initializing delay
-            setTimeout(() => {
-                if(progress) progress.style.width = '100%';
-                setTimeout(() => {
-                    document.body.classList.add('splash-loaded');
-                    // Optional: remove from DOM after fade
-                    setTimeout(() => splash.style.display = 'none', 1000);
-                }, 600);
-            }, 400);
-        });
     </script>
 </body>
 </html>

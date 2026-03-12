@@ -11,6 +11,9 @@ $content = file_get_contents($proposal_file);
     <title>Car Hire: Project Proposal - Department of ICT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="public/css/theme.css?v=4.0">
+    <script src="public/js/theme-switcher.js?v=4.0"></script>
     <style>
         :root {
             --primary-color: #1a365d;

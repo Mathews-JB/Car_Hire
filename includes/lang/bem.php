@@ -50,4 +50,5 @@ return array (
   'member' => 'Member',
   'points' => 'Points',
   'progress_to' => 'Progress to',
+  'view_all_history' => 'View All History',
 );

@@ -2,7 +2,7 @@
   "name": "Car Hire Zambia",
   "short_name": "Car Hire",
   "description": "Premium Car Rental Service in Zambia. Rent luxury SUVs, executive sedans, and rugged 4x4s.",
-  "start_url": "/index.php",
+  "start_url": "index.php",
   "display": "standalone",
   "background_color": "#111827",
   "theme_color": "#2563eb",

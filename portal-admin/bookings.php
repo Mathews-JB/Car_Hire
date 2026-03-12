@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -37,8 +37,12 @@ $reservations = $stmt->fetchAll();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
@@ -50,6 +54,7 @@ $reservations = $stmt->fetchAll();
                     <p class="text-secondary">Track and manage vehicle bookings and rental schedules.</p>
                 </div>
                 <div class="header-actions">
+                    <?php include_once '../includes/theme_switcher.php'; ?>
                     <a href="reports.php?type=bookings" class="btn btn-outline"><i class="fas fa-file-export"></i> Export CSV</a>
                 </div>
             </div>
@@ -117,3 +122,4 @@ $reservations = $stmt->fetchAll();
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

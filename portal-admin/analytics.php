@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -92,6 +92,9 @@ $unique_customers = $stmt->fetchColumn() ?: 0;
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .analytics-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 30px; }
@@ -118,6 +121,7 @@ $unique_customers = $stmt->fetchColumn() ?: 0;
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
@@ -129,6 +133,7 @@ $unique_customers = $stmt->fetchColumn() ?: 0;
                     <p class="text-secondary">Visual performance data and growth metrics for the last 30 days.</p>
                 </div>
                 <div class="header-actions">
+                    <?php include_once '../includes/theme_switcher.php'; ?>
                     <button class="btn btn-outline" onclick="window.print()"><i class="fas fa-print"></i> Print PDF</button>
                     <a href="reports-financial.php" class="btn btn-primary"><i class="fas fa-chart-line"></i> Financials</a>
                 </div>
@@ -201,111 +206,128 @@ $unique_customers = $stmt->fetchColumn() ?: 0;
     </div>
 
     <script>
-        // Revenue Analytics - Stepped Cumulative Model (Guaranteed Upward)
-        const ctxRev = document.getElementById('revenueChart_<?php echo $chart_seed; ?>').getContext('2d');
-        new Chart(ctxRev, {
-            type: 'line',
-            data: {
-                labels: <?php echo json_encode($revenue_labels); ?>,
-                datasets: [
-                    {
-                        label: 'Realized Revenue',
-                        data: <?php echo json_encode($cum_real_arr); ?>,
-                        borderColor: '#4ade80', // Vibrant Green
-                        backgroundColor: 'rgba(74, 222, 128, 0.1)',
-                        fill: true,
-                        stepped: true, // Flat horizontal lines only
-                        tension: 0,
-                        borderWidth: 4,
-                        pointRadius: 0
+        function getChartColors() {
+            const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+            return {
+                text: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(15,23,42,0.6)',
+                grid: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                legend: isDark ? (isDark ? 'white' : '#0f172a') : '#0f172a'
+            };
+        }
+
+        let revenueChart, statusChart, fleetChart;
+
+        function initCharts() {
+            const colors = getChartColors();
+            
+            if(revenueChart) revenueChart.destroy();
+            if(statusChart) statusChart.destroy();
+            if(fleetChart) fleetChart.destroy();
+
+            // Revenue Chart
+            const ctxRev = document.getElementById('revenueChart_<?php echo $chart_seed; ?>').getContext('2d');
+            revenueChart = new Chart(ctxRev, {
+                type: 'line',
+                data: {
+                    labels: <?php echo json_encode($revenue_labels); ?>,
+                    datasets: [
+                        {
+                            label: 'Realized Revenue',
+                            data: <?php echo json_encode($cum_real_arr); ?>,
+                            borderColor: '#4ade80',
+                            backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                            fill: true,
+                            stepped: true,
+                            tension: 0,
+                            borderWidth: 4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Potential Revenue',
+                            data: <?php echo json_encode($cum_proj_arr); ?>,
+                            borderColor: '#60a5fa',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            stepped: true,
+                            tension: 0,
+                            pointRadius: 0,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { 
+                        legend: { position: 'top', labels: { color: colors.text, usePointStyle: true } },
                     },
-                    {
-                        label: 'Potential Revenue',
-                        data: <?php echo json_encode($cum_proj_arr); ?>,
-                        borderColor: '#60a5fa', // Bright Blue
-                        borderWidth: 2,
-                        borderDash: [5, 5],
-                        stepped: true,
-                        tension: 0,
-                        pointRadius: 0,
-                        fill: false
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: { 
-                    legend: { position: 'top', labels: { color: 'rgba(255,255,255,0.7)', usePointStyle: true } },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.dataset.label + ': ZMW ' + context.parsed.y.toLocaleString();
-                            }
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            suggestedMax: <?php echo max($projected_revenue, $cumulative_revenue) * 1.15; ?>,
+                            grid: { color: colors.grid }, 
+                            ticks: { color: colors.text, callback: v => 'ZMW ' + (v >= 1000 ? (v/1000) + 'k' : v) } 
+                        },
+                        x: { 
+                            grid: { display: false }, 
+                            ticks: { color: colors.text, autoSkip: true, maxTicksLimit: 10 } 
                         }
                     }
+                }
+            });
+
+            // Status Chart
+            const ctxStat = document.getElementById('statusChart').getContext('2d');
+            statusChart = new Chart(ctxStat, {
+                type: 'doughnut',
+                data: {
+                    labels: <?php echo json_encode(array_keys($status_counts)); ?>,
+                    datasets: [{
+                        data: <?php echo json_encode(array_values($status_counts)); ?>,
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
                 },
-                scales: {
-                    y: { 
-                        beginAtZero: true,
-                        suggestedMax: <?php echo max($projected_revenue, $cumulative_revenue) * 1.15; ?>,
-                        grid: { color: 'rgba(255,255,255,0.05)' }, 
-                        ticks: { color: 'rgba(255,255,255,0.5)', callback: v => 'ZMW ' + (v >= 1000 ? (v/1000) + 'k' : v) } 
-                    },
-                    x: { 
-                        grid: { display: false }, 
-                        ticks: { color: 'rgba(255,255,255,0.5)', autoSkip: true, maxTicksLimit: 10 } 
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: colors.legend, padding: 20, usePointStyle: true } }
                     }
                 }
-            }
-        });
+            });
 
-        // Status Chart
-        const ctxStat = document.getElementById('statusChart').getContext('2d');
-        new Chart(ctxStat, {
-            type: 'doughnut',
-            data: {
-                labels: <?php echo json_encode(array_keys($status_counts)); ?>,
-                datasets: [{
-                    data: <?php echo json_encode(array_values($status_counts)); ?>,
-                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
-                    borderWidth: 0,
-                    hoverOffset: 20
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom', labels: { color: 'white', padding: 20, usePointStyle: true } }
+            // Fleet Popularity
+            const ctxFleet = document.getElementById('fleetChart').getContext('2d');
+            fleetChart = new Chart(ctxFleet, {
+                type: 'bar',
+                data: {
+                    labels: <?php echo json_encode(array_map(fn($v) => $v['make'].' '.$v['model'], $popular_vehicles)); ?>,
+                    datasets: [{
+                        label: 'Bookings',
+                        data: <?php echo json_encode(array_column($popular_vehicles, 'count')); ?>,
+                        backgroundColor: '#6366f1',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: colors.grid }, ticks: { color: colors.text, stepSize: 1 } },
+                        x: { grid: { display: false }, ticks: { color: colors.text } }
+                    }
                 }
-            }
-        });
+            });
+        }
 
-        // Fleet Popularity
-        const ctxFleet = document.getElementById('fleetChart').getContext('2d');
-        new Chart(ctxFleet, {
-            type: 'bar',
-            data: {
-                labels: <?php echo json_encode(array_map(fn($v) => $v['make'].' '.$v['model'], $popular_vehicles)); ?>,
-                datasets: [{
-                    label: 'Bookings',
-                    data: <?php echo json_encode(array_column($popular_vehicles, 'count')); ?>,
-                    backgroundColor: '#6366f1',
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } },
-                    x: { grid: { display: false }, ticks: { color: 'white' } }
-                }
-            }
-        });
+        document.addEventListener('DOMContentLoaded', initCharts);
+        window.addEventListener('themeChanged', initCharts);
     </script>
+
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

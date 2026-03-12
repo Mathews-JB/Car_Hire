@@ -74,6 +74,9 @@ foreach ($checks as $check) {
         .item { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         code { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #60a5fa; }
     </style>
+    <!-- Theme System -->
+    <link rel="stylesheet" href="public/css/theme.css?v=4.0">
+    <script src="public/js/theme-switcher.js?v=4.0"></script>
 </head>
 <body>
     <div class="card">

@@ -31,7 +31,18 @@ $page_titles = [
     'verify-profile.php' => 'Identity Verification',
     'vehicle-details.php' => 'Vehicle Info',
     'login.php' => 'Account Login',
-    'register.php' => 'Create Account'
+    'register.php' => 'Create Account',
+    'fleet.php' => 'Fleet Management',
+    'analytics.php' => 'Business Insights',
+    'users.php' => 'Staff Directory',
+    'settings.php' => 'System Config',
+    'bookings.php' => 'Booking Ops',
+    'reservations.php' => 'Active Rentals',
+    'monitoring.php' => 'Fleet Health',
+    'tracking.php' => 'Live Ops',
+    'reports.php' => 'Data Exports',
+    'reports-financial.php' => 'Financial Intel',
+    'support-inbox.php' => 'Help Desk'
 ];
 
 $display_title = $page_titles[$current_page] ?? 'Car Hire';
@@ -45,7 +56,7 @@ $display_title = $page_titles[$current_page] ?? 'Car Hire';
         left: 0;
         right: 0;
         height: 65px;
-        background: rgba(15, 23, 42, 0.8);
+        background: rgba(30, 30, 35, 0.8);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
         z-index: 10000;
@@ -117,9 +128,12 @@ $display_title = $page_titles[$current_page] ?? 'Car Hire';
 
     <div class="m-page-title"><?php echo $display_title; ?></div>
 
-    <div class="m-action-right">
+    <div class="m-action-right" style="width: auto; gap: 10px; align-items: center; display: flex;">
+        <!-- Theme Switcher -->
+        <?php include __DIR__ . '/theme_switcher.php'; ?>
+
         <?php if ($current_page != 'login.php' && $current_page != 'register.php'): ?>
-            <a href="notifications.php" style="color: white; font-size: 1.2rem; opacity: 0.8;">
+            <a href="notifications.php" style="color: white; font-size: 1.2rem; opacity: 0.8; margin-left: 5px;">
                 <i class="fas fa-bell"></i>
             </a>
         <?php endif; ?>

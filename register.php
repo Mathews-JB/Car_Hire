@@ -70,18 +70,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="public/css/theme.css?v=4.0">
+    <script src="public/js/theme-switcher.js?v=4.0"></script>
     <style>
-        html, body { 
-            background: #080c17 !important; 
-            color: #f8fafc !important; 
-            overflow: hidden !important;
-            height: 100% !important;
-        }
-        
         /* Validation Feedback Styles */
         .input-wrapper {
             position: relative;
         }
+        .toggle-password {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            opacity: 0.5;
+            transition: 0.2s;
+            color: white;
+        }
+        .toggle-password:hover { opacity: 1; }
         .validation-icon {
             position: absolute;
             right: 15px;
@@ -158,6 +165,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include_once 'includes/mobile_header.php'; ?>
 
     <div class="auth-bg">
+        <!-- Floating Theme Switcher -->
+        <div style="position: fixed; z-index: 1000; top: 15px; right: 15px;">
+            <?php include 'includes/theme_switcher.php'; ?>
+        </div>
+
         <div class="auth-card">
             <div style="text-align: center; margin-bottom: 35px;">
                 <a href="index.php" class="logo" style="font-size: 2.22rem; display: block; margin-bottom: 5px;">Car Hire</a>
@@ -207,6 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 4px;">Pass</label>
                         <div class="input-wrapper">
                             <input type="password" name="password" id="passwordInput" required placeholder="••••" style="width: 100%;">
+                            <i class="fas fa-eye toggle-password" id="togglePass"></i>
                             <i class="fas fa-check-circle validation-icon valid" id="passValid"></i>
                         </div>
                     </div>
@@ -214,6 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 4px;">Confirm</label>
                         <div class="input-wrapper">
                             <input type="password" name="confirm_password" id="confirmPassInput" required placeholder="••••" style="width: 100%;">
+                            <i class="fas fa-eye toggle-password" id="toggleConfirmPass"></i>
                             <i class="fas fa-check-circle validation-icon valid" id="matchValid"></i>
                             <i class="fas fa-times-circle validation-icon invalid" id="matchInvalid"></i>
                         </div>
@@ -380,19 +394,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const togglePass = document.getElementById('togglePass');
         const toggleConfirmPass = document.getElementById('toggleConfirmPass');
 
-        togglePass.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
+        if (togglePass) {
+            togglePass.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        }
 
-        toggleConfirmPass.addEventListener('click', function() {
-            const type = confirmPassInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPassInput.setAttribute('type', type);
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
+        if (toggleConfirmPass) {
+            toggleConfirmPass.addEventListener('click', function() {
+                const type = confirmPassInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPassInput.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        }
 
         // Prevent submission if invalid
         document.getElementById('registerForm').addEventListener('submit', function(e) {

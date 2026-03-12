@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -50,6 +50,9 @@ if (isset($_POST['freeze_account'])) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .security-card {
             background: rgba(30, 30, 35, 0.6);
@@ -89,6 +92,7 @@ if (isset($_POST['freeze_account'])) {
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
 
@@ -99,6 +103,7 @@ if (isset($_POST['freeze_account'])) {
                     <p class="text-secondary">Manage master access and emergency lockdowns.</p>
                 </div>
                 <div class="header-actions">
+                    <?php include_once '../includes/theme_switcher.php'; ?>
                     <a href="notifications.php" class="btn btn-outline" style="position: relative; width: 45px; height: 45px; padding: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-bell"></i>
                     </a>
@@ -188,3 +193,4 @@ if (isset($_POST['freeze_account'])) {
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

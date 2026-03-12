@@ -28,6 +28,10 @@ $active_rentals = $stmt->fetchColumn();
 $stmt = $pdo->query("SELECT COUNT(*) FROM vehicles WHERE status = 'available'");
 $available_vehicles = $stmt->fetchColumn();
 
+// 5. Event Quote Requests (Pending Quotes)
+$stmt = $pdo->query("SELECT COUNT(*) FROM support_messages WHERE subject LIKE '%Event%' AND quote_status IS NULL");
+$event_quote_requests = $stmt->fetchColumn();
+
 // --- Detailed Data ---
 
 // Recent Bookings
@@ -74,19 +78,13 @@ $expiring_docs = $stmt->fetchAll();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css?v=2.3">
-    <style>
-        .admin-layout::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4); /* Extra dim for dashboard */
-            z-index: 0;
-            pointer-events: none;
-        }
-    </style>
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
 </head>
-<body>
 
+<body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
 
@@ -104,7 +102,49 @@ $expiring_docs = $stmt->fetchAll();
                         });
                     </script>
                 <?php unset($_SESSION['msg_unfrozen']); endif; ?>
-                <div class="header-actions">
+                <!-- Mobile Hub (New Professional Premium Look) -->
+                <div class="admin-command-hub mobile-only">
+                    <a href="notifications.php" class="hub-item">
+                        <div class="hub-icon">
+                            <i class="fas fa-bell"></i>
+                            <?php if (isset($notif_count) && $notif_count > 0): ?>
+                                <span class="hub-badge"><?php echo $notif_count; ?></span>
+                            <?php endif; ?>
+                        </div>
+                        <span class="hub-label">Alerts</span>
+                    </a>
+                    <a href="support-inbox.php?filter=events" class="hub-item">
+                        <div class="hub-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                            <i class="fas fa-car-side"></i>
+                            <?php if ($event_quote_requests > 0): ?>
+                                <span class="hub-badge" style="background: #3b82f6;"><?php echo $event_quote_requests; ?></span>
+                            <?php endif; ?>
+                        </div>
+                        <span class="hub-label">Events</span>
+                    </a>
+                    <a href="fleet.php" class="hub-item primary">
+                        <div class="hub-icon"><i class="fas fa-car"></i></div>
+                        <span class="hub-label">Fleet</span>
+                    </a>
+                    <a href="reports.php" class="hub-item">
+                        <div class="hub-icon"><i class="fas fa-download"></i></div>
+                        <span class="hub-label">Report</span>
+                    </a>
+                    <a href="bookings.php?status=pending" class="hub-item">
+                        <div class="hub-icon">
+                            <i class="fas fa-clock"></i>
+                            <?php if ($pending_bookings > 0): ?>
+                                <span class="hub-badge"><?php echo $pending_bookings; ?></span>
+                            <?php endif; ?>
+                        </div>
+                        <span class="hub-label">Review</span>
+                    </a>
+                </div>
+
+                <div class="header-actions desktop-only">
+                    <!-- Theme Switcher -->
+                    <?php include '../includes/theme_switcher.php'; ?>
+
                     <a href="notifications.php" class="btn btn-outline" style="position: relative; width: 50px; height: 50px; padding: 0; border-radius: 50%;">
                         <i class="fas fa-bell" style="font-size: 1.2rem;"></i>
                         <?php if (isset($notif_count) && $notif_count > 0): ?>
@@ -119,8 +159,11 @@ $expiring_docs = $stmt->fetchAll();
             </div>
 
             <!-- Quick Actions Bar -->
-            <div style="display: flex; gap: 12px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px;">
+            <div class="quick-actions-bar desktop-only" style="display: flex; gap: 12px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px;">
                 <a href="bookings.php?status=pending" class="btn btn-primary" style="white-space: nowrap; flex-shrink: 0;"><i class="fas fa-clock"></i> Review Pending (<?php echo $pending_bookings; ?>)</a>
+                <?php if($event_quote_requests > 0): ?>
+                    <a href="support-inbox.php?filter=events" class="btn btn-outline" style="white-space: nowrap; flex-shrink: 0; border-color: #3b82f6; color: #60a5fa;"><i class="fas fa-car-side"></i> Event Quotes (<?php echo $event_quote_requests; ?>)</a>
+                <?php endif; ?>
                 <a href="fleet.php?action=add" class="btn btn-outline" style="white-space: nowrap; flex-shrink: 0;"><i class="fas fa-plus-circle"></i> Add Vehicle</a>
                 <a href="monitoring.php" class="btn btn-outline" style="white-space: nowrap; flex-shrink: 0;"><i class="fas fa-map-marked-alt"></i> Live Map</a>
                 <a href="reports-financial.php" class="btn btn-outline" style="white-space: nowrap; flex-shrink: 0;"><i class="fas fa-chart-line"></i> Reports</a>
@@ -149,6 +192,16 @@ $expiring_docs = $stmt->fetchAll();
                         <i class="fas fa-road" style="font-size: 2rem; opacity: 0.15;"></i>
                     </div>
                 </div>
+                <a href="support-inbox.php?filter=events" class="summary-card" style="border-left: 4px solid #3b82f6; background: rgba(59, 130, 246, 0.03); cursor: pointer; display: block; text-decoration: none; transition: transform 0.2s;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <h4 style="color: #60a5fa;">Event Requests</h4>
+                            <p><?php echo $event_quote_requests; ?></p>
+                            <small>Pending Fleet Quotes</small>
+                        </div>
+                        <i class="fas fa-car-side" style="font-size: 2.2rem; opacity: 0.15; color: #3b82f6;"></i>
+                    </div>
+                </a>
                 <div class="summary-card status-success-border">
                     <div style="display: flex; justify-content: space-between; align-items: start;">
                         <div>

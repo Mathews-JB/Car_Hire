@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -69,6 +69,9 @@ $failed_count   = count(array_filter($payments, fn($p) => $p['status'] !== 'succ
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .pay-stat {
             padding: 24px;
@@ -101,12 +104,13 @@ $failed_count   = count(array_filter($payments, fn($p) => $p['status'] !== 'succ
         
         @media (max-width: 768px) {
             .pay-stat { padding: 20px; text-align: center; }
-            .filters-bar { flex-direction: column; align-items: stretch; }
-            .filters-bar input, .filters-bar select, .filters-bar button { width: 100%; }
+            .filters-bar { flex-direction: column; align-items: stretch; gap: 12px; }
+            .filters-bar .form-control, .filters-bar .btn { width: 100% !important; margin: 0 !important; }
         }
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
     <div class="admin-layout">
         <?php include_once '../includes/admin_sidebar.php'; ?>
 
@@ -114,9 +118,10 @@ $failed_count   = count(array_filter($payments, fn($p) => $p['status'] !== 'succ
             <div class="dashboard-header">
                 <div>
                     <h1>Payment Transactions</h1>
-                    <p class="text-secondary">All Lenco payment records — live gateway data.</p>
+                    <p class="text-secondary">All Lenco payment records â€” live gateway data.</p>
                 </div>
                 <div class="header-actions">
+                    <?php include_once '../includes/theme_switcher.php'; ?>
                     <a href="reports-financial.php" class="btn btn-outline"><i class="fas fa-chart-bar"></i> ROI Reports</a>
                 </div>
             </div>
@@ -158,15 +163,15 @@ $failed_count   = count(array_filter($payments, fn($p) => $p['status'] !== 'succ
 
             <!-- Filters -->
             <form method="GET" class="filters-bar">
-                <input type="text" name="search" placeholder="Search customer, ID..." value="<?php echo htmlspecialchars($search); ?>" style="flex: 1; min-width: 150px;">
-                <select name="status" onchange="this.form.submit()">
+                <input type="text" name="search" class="form-control" placeholder="Search customer, ID..." value="<?php echo htmlspecialchars($search); ?>" style="flex: 2; margin: 0;">
+                <select name="status" class="form-control" onchange="this.form.submit()" style="flex: 1; margin: 0;">
                     <option value="">Status</option>
                     <option value="successful" <?php echo $status_filter === 'successful' ? 'selected' : ''; ?>>Successful</option>
                     <option value="failed" <?php echo $status_filter === 'failed' ? 'selected' : ''; ?>>Failed</option>
                 </select>
-                <button type="submit" class="btn btn-primary" style="padding: 10px 15px;"><i class="fas fa-search"></i></button>
+                <button type="submit" class="btn btn-primary" style="padding: 14px 20px;"><i class="fas fa-search"></i> Search</button>
                 <?php if ($search || $status_filter || $provider_filter): ?>
-                    <a href="payments.php" class="btn btn-outline" style="padding: 10px 15px;"><i class="fas fa-times"></i></a>
+                    <a href="payments.php" class="btn btn-outline" style="padding: 14px 20px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-times"></i> Clear</a>
                 <?php endif; ?>
             </form>
 
@@ -210,7 +215,7 @@ $failed_count   = count(array_filter($payments, fn($p) => $p['status'] !== 'succ
                                     <?php echo htmlspecialchars($p['transaction_id']); ?>
                                 </span>
                             </td>
-                            <td data-label="Mobile"><?php echo htmlspecialchars($p['phone_number'] ?: '—'); ?></td>
+                            <td data-label="Mobile"><?php echo htmlspecialchars($p['phone_number'] ?: 'â€”'); ?></td>
                             <td data-label="Status">
                                 <?php
                                 $s = strtolower($p['status']);
@@ -245,3 +250,4 @@ $failed_count   = count(array_filter($payments, fn($p) => $p['status'] !== 'succ
     <?php include_once '../includes/mobile_nav.php'; ?>
 </body>
 </html>
+

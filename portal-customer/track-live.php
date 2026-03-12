@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -39,7 +39,10 @@ if (!$booking) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
-    <link rel="stylesheet" href="../public/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../public/css/style.css?v=<?php echo time(); ?>
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>">
     <style>
         body { background: #0f172a; margin: 0; padding: 0; overflow: hidden; color: #f1f5f9; font-family: 'Inter', sans-serif; height: 100vh; width: 100vw; }
         
@@ -51,7 +54,7 @@ if (!$booking) {
             top: 20px;
             left: 20px;
             right: 20px;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(30, 30, 35, 0.85);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             padding: 15px 25px;
@@ -95,7 +98,7 @@ if (!$booking) {
             bottom: 30px;
             right: 20px;
             z-index: 1000;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(30, 30, 35, 0.8);
             backdrop-filter: blur(10px);
             padding: 10px 20px;
             border-radius: 12px;
@@ -126,6 +129,7 @@ if (!$booking) {
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
 <header class="tracking-header">
     <div style="display:flex; align-items:center; gap:20px;">
@@ -179,7 +183,7 @@ if (!$booking) {
     Live Stream Active
 </div>
 
-<div id="debug-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(15, 23, 42, 0.95); color: white; padding: 30px; z-index: 9999; pointer-events: none; text-align: center; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 100px rgba(0,0,0,0.8);">
+<div id="debug-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(30, 30, 35, 0.95); color: white; padding: 30px; z-index: 9999; pointer-events: none; text-align: center; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 100px rgba(0,0,0,0.8);">
     <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 10px;">Establishing Stream...</div>
     <div style="font-size: 0.9rem; opacity: 0.6;">Connecting to vehicle telemetry...</div>
 </div>
@@ -349,3 +353,4 @@ if (!$booking) {
 
 </body>
 </html>
+

@@ -59,6 +59,9 @@ $vehicles = $stmt->fetchAll();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         .filter-bar {
             background: rgba(30, 30, 35, 0.6);
@@ -239,11 +242,17 @@ $vehicles = $stmt->fetchAll();
             <a href="profile.php"><?php echo __('profile'); ?></a>
         </div>
         <div class="hub-user">
+            <!-- Theme Switcher -->
+            <?php include_once '../includes/theme_switcher.php'; ?>
+            
             <?php 
                 $display_name = $_SESSION['user_name'] ?? 'User';
+                $first_name = explode(' ', $display_name)[0];
                 $initial = !empty($display_name) ? strtoupper($display_name[0]) : 'U';
             ?>
+            <span class="hub-user-name"><?php echo htmlspecialchars($first_name); ?></span>
             <div class="hub-avatar"><?php echo htmlspecialchars($initial); ?></div>
+            <a href="../logout.php" style="color: var(--danger); margin-left: 10px; font-size: 0.85rem;"><i class="fas fa-sign-out-alt"></i></a>
         </div>
     </nav>
 

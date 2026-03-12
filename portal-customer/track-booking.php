@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../includes/db.php';
 include_once '../includes/functions.php';
 
@@ -39,7 +39,10 @@ if (!$booking) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
-    <link rel="stylesheet" href="../public/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../public/css/style.css?v=<?php echo time(); ?>
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>">
     <style>
         body { background: #0f172a; margin: 0; padding: 0; overflow: hidden; color: #ffffff; font-family: 'Inter', sans-serif; }
         
@@ -118,6 +121,7 @@ if (!$booking) {
     </style>
 </head>
 <body>
+    <?php include_once '../includes/mobile_header.php'; ?>
 
 <header class="tracking-header">
     <div style="display:flex; align-items:center; gap:20px; margin-bottom:5px;">
@@ -190,7 +194,7 @@ if (!$booking) {
         throw new Error("Leaflet missing");
     }
     
-    console.log("✓ Leaflet loaded successfully");
+    console.log("âœ“ Leaflet loaded successfully");
     document.getElementById('debug-overlay').innerHTML = "Step 1: Leaflet OK<br>";
     
     // --- 2. Map Configuration (OpenStreetMap) ---
@@ -208,15 +212,15 @@ if (!$booking) {
         attributionControl: false 
     }).setView([initialLat, initialLng], 14);
     
-    console.log("✓ Map created");
+    console.log("âœ“ Map created");
     document.getElementById('debug-overlay').innerHTML += "Step 4: Map created<br>";
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '© OpenStreetMap'
+        attribution: 'Â© OpenStreetMap'
     }).addTo(map);
     
-    console.log("✓ Tiles added");
+    console.log("âœ“ Tiles added");
     document.getElementById('debug-overlay').innerHTML += "Step 5: Tiles added<br>";
 
     // --- 2. Live State ---
@@ -376,3 +380,4 @@ if (!$booking) {
 
 </body>
 </html>
+

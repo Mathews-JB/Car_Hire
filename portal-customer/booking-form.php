@@ -236,6 +236,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         body { 
             background: transparent !important;
@@ -308,7 +311,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="portal-content">
         <div class="container">
-            <div class="dashboard-grid" style="padding: 40px 0;">
+            <div class="dashboard-grid" style="padding: 30px 0; max-width: 820px; margin: 0 auto;">
                 <!-- Left Side: Form -->
                 <div class="booking-details">
                     <h2 style="font-size: 2rem; margin-bottom: 5px;">Review & Confirm Booking</h2>

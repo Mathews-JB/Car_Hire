@@ -103,6 +103,9 @@ $cover_img = !empty($user['cover_photo']) ? '../' . $user['cover_photo'] : '../p
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Theme System -->
+    <link rel="stylesheet" href="../public/css/theme.css?v=4.0">
+    <script src="../public/js/theme-switcher.js?v=4.0"></script>
     <style>
         body { 
             background: transparent !important;
@@ -234,6 +237,9 @@ $cover_img = !empty($user['cover_photo']) ? '../' . $user['cover_photo'] : '../p
                 $first_name = explode(' ', $display_name)[0];
             ?>
             <span class="hub-user-name"><?php echo htmlspecialchars($first_name); ?></span>
+            <!-- Theme Switcher -->
+            <?php include_once '../includes/theme_switcher.php'; ?>
+
             <div class="hub-avatar">
                 <?php if(!empty($user['profile_picture'])): ?>
                     <img src="../<?php echo $user['profile_picture']; ?>" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
